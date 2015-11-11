@@ -7,11 +7,8 @@
  */
 var sliceArgs = Function.prototype.call.bind(Array.prototype.slice);
 var toString  = Function.prototype.call.bind(Object.prototype.toString);
-var NODE_ENV  = process.env.NODE_ENV || 'development';
+var NODE_ENV  = 'development';
 var pkg = require('./package.json');
-
-// Polyfill
-Object.assign = require('object-assign');
 
 // Node
 var path = require('path');
@@ -20,12 +17,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 // Webpack Plugins
-var OccurenceOrderPlugin = webpack.optimize.OccurenceOrderPlugin;
 var CommonsChunkPlugin   = webpack.optimize.CommonsChunkPlugin;
-var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
-var DedupePlugin   = webpack.optimize.DedupePlugin;
-var DefinePlugin   = webpack.DefinePlugin;
-var BannerPlugin   = webpack.BannerPlugin;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 /*
@@ -48,7 +40,7 @@ module.exports = {
     inline: true,
     colors: true,
     historyApiFallback: true,
-    contentBase: 'src/public',
+    contentBase: 'src/app',
     publicPath: '/__build__'
   },
 
@@ -56,26 +48,13 @@ module.exports = {
   entry: {
     'angular2': [
       // Angular 2 Deps
-      '@reactivex/rxjs',
       'zone.js',
       'reflect-metadata',
       // to ensure these modules are grouped together in one file
       'angular2/angular2',
       'angular2/core',
-      'angular2/router',
-      'angular2/http'
     ],
     'app': [
-      // App
-
-      // './examples/  /bootstrap' <-- view examples
-
-      // './examples/rx-autosuggest/bootstrap'
-      // './examples/rx-draggable/bootstrap'
-      // './examples/rx-timeflies/bootstrap'
-      // './examples/simple-component/bootstrap'
-      // './examples/simple-todo/bootstrap'
-
       './src/app/bootstrap'
     ]
   },
@@ -92,30 +71,14 @@ module.exports = {
   resolve: {
     root: __dirname,
     extensions: ['','.ts','.js','.json'],
-    alias: {
-      'rx': '@reactivex/rxjs'
-      // 'common': 'src/common',
-      // 'bindings': 'src/bindings',
-      // 'components': 'src/app/components'
-      // 'services': 'src/app/services',
-      // 'stores': 'src/app/stores'
-    },
     modulesDirectories: ['node_modules', 'components']
   },
 
   module: {
     loaders: [
-      // Support for *.json files.
-      { test: /\.json$/,  loader: 'json' },
-
-      // Support for CSS as raw text
       //{ test: /\.css$/,   loader: 'raw' },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') },
 
-      // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw' },
-
-      // Support for .ts files.
       { test: /\.ts$/,    loader: 'ts',
         query: {
           'ignoreDiagnostics': [
@@ -146,12 +109,6 @@ module.exports = {
 
   plugins: [
     new ExtractTextPlugin('style.css', { allChunks: true }),
-    new DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      'VERSION': JSON.stringify(pkg.version)
-    }),
-    new OccurenceOrderPlugin(),
-    new DedupePlugin(),
     new CommonsChunkPlugin({
       name: 'angular2',
       minChunks: Infinity,
