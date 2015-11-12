@@ -4,6 +4,7 @@
 import {Component, View} from 'angular2/angular2';
 
 //import styles from './logo.css';
+var styles = require("./logo.css");
 
 /*
  * App Component
@@ -12,13 +13,9 @@ import {Component, View} from 'angular2/angular2';
 @Component({
     selector: 'logo', // <app></app>
     template: `
-        <div>
-            Here comes the logo
-        </div>
+        <div class="${styles.logo}"/>
     `
 })
 export class Logo {
-    onInit(){
-        //console.log(styles);
-    }
+
 }

@@ -94,7 +94,9 @@ module.exports = {
           /test/,
           /node_modules/
         ]
-      }
+      },
+
+      { test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
     ],
     noParse: [
       /rtts_assert\/src\/rtts_assert/,

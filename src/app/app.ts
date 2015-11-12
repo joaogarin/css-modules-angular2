@@ -30,9 +30,6 @@ import {Logo} from "./components/logo/logo";
     directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES, Logo],
     // Our list of styles in our component. We may add more to compose many styles together
     template: `
-        <header>
-            <h1 class="title">Hello {{ title }}</h1>
-        </header>
         <logo></logo>
     `
 })
