@@ -6,7 +6,7 @@ A working demo of [CSS Modules], using [Webpack]'s [css-loader] in [module mode]
 
 ```bash
 $ npm install
-$ npm start & open http://localhost:3000
+$ npm start & open http://localhost:8080
 ```
 
 ## License
