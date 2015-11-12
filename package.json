@@ -11,8 +11,6 @@
     "clean-start": "npm run clean && npm start",
     "watch": "webpack --watch",
     "server": "webpack-dev-server --inline --colors --display-error-details --display-cached --port 8080",
-    "webdriver-update": "webdriver-manager update",
-    "webdriver-start": "webdriver-manager start",
     "start": "npm run server"
   },
   "repository": {
@@ -26,17 +24,13 @@
   },
   "homepage": "https://github.com/angularclass/angular2-webpack-starter",
   "dependencies": {
-    "@reactivex/rxjs": "5.0.0-alpha.4",
     "angular2": "2.0.0-alpha.45",
     "reflect-metadata": "0.1.2",
     "zone.js": "0.5.8"
   },
   "devDependencies": {
     "css-loader": "^0.21.0",
-    "exports-loader": "0.6.2",
-    "expose-loader": "0.7.0",
     "file-loader": "^0.8.4",
-    "imports-loader": "^0.6.4",
     "object-assign": "4.0.1",
     "raw-loader": "0.5.1",
     "rimraf": "2.4.3",
