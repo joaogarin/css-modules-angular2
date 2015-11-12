@@ -3,7 +3,6 @@
  */
 import {Component, View} from 'angular2/angular2';
 
-//import styles from './logo.css';
 var styles = require("./logo.css");
 
 /*
