@@ -1,6 +1,6 @@
 # CSS Modules Webpack Demo with Angular2
 
-A working demo of [CSS Modules], using [Webpack]'s [css-loader] in [module mode] and [angular2]
+A working demo of [CSS Modules], using [Webpack]'s [css-loader] in [module mode] and [angular]
 
 ## Run the example
 
