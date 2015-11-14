@@ -23,8 +23,8 @@ export class ScopedSelectorsDemo {
             { name: 'ScopedSelectors.css', source: css }
         ];
 
-        this.innerContent = `<div class=${styles.root}>
-            <p class=${styles.text}>Scoped Selectors</p>
+        this.innerContent = `<div class="${styles.root}">
+            <p class="${styles.text}">Scoped Selectors</p>
           </div>`;
     }
 }

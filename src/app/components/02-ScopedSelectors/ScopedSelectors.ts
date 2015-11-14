@@ -7,8 +7,8 @@ var styles = require("./ScopedSelectors.css");
 
 @Component({
     'selector': 'scoped-selectors',
-    'template': `<div class=${styles.root}>
-            <p class=${styles.text}>Scoped Selectors</p>
+    'template': `<div class="${styles.root}">
+            <p class="${styles.text}">Scoped Selectors</p>
           </div>`
 })
 export class ScopedSelectors {

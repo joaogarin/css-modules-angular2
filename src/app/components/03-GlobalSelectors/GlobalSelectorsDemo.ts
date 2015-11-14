@@ -23,7 +23,7 @@ export class GlobalSelectorsDemo {
             { name: 'GlobalSelectors.css', source: css }
         ];
 
-        this.innerContent = `<div class=${ styles.root }>
+        this.innerContent = `<div class="${ styles.root }">
         <p class="text">Global Selectors</p>
       </div>`;
     }

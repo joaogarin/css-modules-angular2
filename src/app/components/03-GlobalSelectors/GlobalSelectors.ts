@@ -7,7 +7,7 @@ var styles = require("./GlobalSelectors.css");
 
 @Component({
     'selector': 'global-selectors',
-    'template': `<div class=${ styles.root }>
+    'template': `<div class="${ styles.root }">
         <p class="text">Global Selectors</p>
       </div>`
 })
