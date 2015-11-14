@@ -6,8 +6,7 @@ import {Component, View} from 'angular2/angular2';
 var styles = require("./logo.css");
 
 /*
- * App Component
- * Top Level Component
+ * Logo Component
  */
 @Component({
     selector: 'logo', // <app></app>
