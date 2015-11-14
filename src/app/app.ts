@@ -11,9 +11,10 @@ import {CORE_DIRECTIVES} from 'angular2/angular2';
 /*
 * Custom components
 */
-import {Logo} from "./components/logo/logo";
+import {Logo} from "./components/01-Logo/logo";
 import {Snippet} from "./components/shared/Snippet/Snippet";
-import {ScopedSelectorsDemo} from "./components/ScopedSelectors/ScopedSelectorsDemo";
+import {ScopedSelectorsDemo} from "./components/02-ScopedSelectors/ScopedSelectorsDemo";
+import {GlobalSelectorsDemo} from "./components/03-GlobalSelectors/GlobalSelectorsDemo";
 
 var styles = require("./app.css");
 
@@ -26,7 +27,7 @@ var styles = require("./app.css");
     selector: 'app', // <app></app>
     // We need to tell Angular's compiler which directives are in our template.
     // Doing so will allow Angular to attach our behavior to an element
-    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet],
+    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo],
     // The template for our app
     template: `
     <div class="${styles.app}">
@@ -38,6 +39,11 @@ var styles = require("./app.css");
         <p>The following component uses two classes, <strong>.root</strong> and <strong>.text</strong>, both of which would typically be too vague in a larger project.</p>
         <p>CSS Module semantics ensure that these <strong>classes are locally scoped</strong> to the component and don't collide with other classes in the global scope.</p>
         <scoped-selectors-demo></scoped-selectors-demo>
+        <h2>Global Selectors</h2>
+        <p>Although they should be used as sparingly as possible, <strong>global selectors are still available when required.</strong></p>
+        <p>The following component styles all <strong>&lt;p&gt;</strong> tags nested inside it.</p>
+        <global-selectors-demo></global-selectors-demo>
+        <hr class="${styles.hr}" />
     </div>
     `
 })
