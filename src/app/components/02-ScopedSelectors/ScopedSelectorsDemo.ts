@@ -11,10 +11,13 @@ var css = require('!!raw!./ScopedSelectors.css');
 @Component({
     directives: [Snippet],
     'selector': 'scoped-selectors-demo',
-    'template': `<snippet [files]="files" [innertext]="innerContent"></snippet>`
+    'template': `<snippet [files]="files">
+        <div class="${styles.root}">
+            <p class="${styles.text}">Scoped Selectors</p>
+          </div>
+    </snippet>`
 })
 export class ScopedSelectorsDemo {
-    innerContent: string;
     files: any;
 
     onInit(){
@@ -22,9 +25,5 @@ export class ScopedSelectorsDemo {
             { name: 'ScopedSelectors.ts', source: js },
             { name: 'ScopedSelectors.css', source: css }
         ];
-
-        this.innerContent = `<div class="${styles.root}">
-            <p class="${styles.text}">Scoped Selectors</p>
-          </div>`;
     }
 }

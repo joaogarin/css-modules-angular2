@@ -15,7 +15,7 @@ import {Logo} from "./components/01-Logo/logo";
 import {Snippet} from "./components/shared/Snippet/Snippet";
 import {ScopedSelectorsDemo} from "./components/02-ScopedSelectors/ScopedSelectorsDemo";
 import {GlobalSelectorsDemo} from "./components/03-GlobalSelectors/GlobalSelectorsDemo";
-import {ClassComposition} from "./components/04-ClassComposition/ClassComposition";
+import {ClassCompositionDemo} from "./components/04-ClassComposition/ClassCompositionDemo";
 
 var styles = require("./app.css");
 
@@ -28,7 +28,7 @@ var styles = require("./app.css");
     selector: 'app', // <app></app>
     // We need to tell Angular's compiler which directives are in our template.
     // Doing so will allow Angular to attach our behavior to an element
-    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassComposition],
+    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassCompositionDemo],
     // The template for our app
     template: `
     <div class="${styles.app}">
@@ -48,7 +48,7 @@ var styles = require("./app.css");
         <h2>Class Composition</h2>
         <p>Both of the components below have <strong>locally scoped CSS</strong> that is <strong>composed from a common set of CSS Modules.</strong></p>
         <p>Since <strong>CSS Modules can be composed</strong>, the resulting markup is optimised by <b>reusing classes between components</b>.</p>
-        <class-composition></class-composition>
+        <class-composition-demo></class-composition-demo>
         <hr class="${styles.hr}" />
     </div>
     `

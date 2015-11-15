@@ -11,10 +11,13 @@ var css = require('!!raw!./GlobalSelectors.css');
 @Component({
     directives: [Snippet],
     'selector': 'global-selectors-demo',
-    'template': `<snippet [files]="files" [innertext]="innerContent"></snippet>`
+    'template': `<snippet [files]="files">
+        <div class="${ styles.root }">
+        <p class="text">Global Selectors</p>
+      </div>
+    </snippet>`
 })
 export class GlobalSelectorsDemo {
-    innerContent: string;
     files: any;
 
     onInit(){
@@ -22,9 +25,5 @@ export class GlobalSelectorsDemo {
             { name: 'GlobalSelectors.ts', source: js },
             { name: 'GlobalSelectors.css', source: css }
         ];
-
-        this.innerContent = `<div class="${ styles.root }">
-        <p class="text">Global Selectors</p>
-      </div>`;
     }
 }
