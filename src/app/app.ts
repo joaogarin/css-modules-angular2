@@ -17,6 +17,7 @@ import {ScopedSelectorsDemo} from "./components/02-ScopedSelectors/ScopedSelecto
 import {GlobalSelectorsDemo} from "./components/03-GlobalSelectors/GlobalSelectorsDemo";
 import {ClassCompositionDemo} from "./components/04-ClassComposition/ClassCompositionDemo";
 import {CompositionOverridesDemo} from "./components/05-CompositionOverrides/CompositionOverridesDemo";
+import {ScopedAnimationsDemo} from "./components/06-ScopedAnimations/ScopedAnimationsDemo";
 
 var styles = require("./app.css");
 
@@ -29,7 +30,7 @@ var styles = require("./app.css");
     selector: 'app', // <app></app>
     // We need to tell Angular's compiler which directives are in our template.
     // Doing so will allow Angular to attach our behavior to an element
-    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassCompositionDemo, CompositionOverridesDemo],
+    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassCompositionDemo, CompositionOverridesDemo, ScopedAnimationsDemo],
     // The template for our app
     template: `
     <div class="${styles.app}">
@@ -55,8 +56,11 @@ var styles = require("./app.css");
         <p>When composing classes, <strong>inherited style properties can be overridden</strong> as you'd expect.</p>
         <p>The following component composes two different classes, but provides overrides which then take precedence.</p>
         <composition-overrides-demo></composition-overrides-demo>
-
         <hr class="${styles.hr}" />
+        <h2>Scoped Animations</h2>
+        <p>CSS Modules even provide <strong>locally scoped animations</strong>, which are typically defined in the global scope.</p>
+        <p>The animation's keyframes are private to the animations module, only exposed publicly via a class which this component inherits from.</p>
+        <scoped-animations-demo></scoped-animations-demo>
     </div>
     `
 })
