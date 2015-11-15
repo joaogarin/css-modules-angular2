@@ -2,6 +2,8 @@
 
 A working demo of [CSS Modules], using [Webpack]'s [css-loader] in [module mode] and [angular2]
 
+A demo of this repo can be found here : http://joaogarin.github.io/css-modules-angular2/
+
 ## Run the example
 
 ```bash
