@@ -25,7 +25,7 @@ export class ScopedAnimationsDemo {
         this.files = [
             { name: 'ScopedAnimations.ts', source: js },
             { name: 'ScopedAnimations.css', source: css },
-            { name: 'animations.css', source: css }
+            { name: 'animations.css', source: animations }
         ];
     }
 }

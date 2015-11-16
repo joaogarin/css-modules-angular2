@@ -29,8 +29,8 @@ export class ClassCompositionDemo {
         this.files = [
             { name: 'StyleVariantA.ts', source: js },
             { name: 'StyleVariantA.css', source: css },
-            { name: 'layout.css', source: css },
-            { name: 'typography.css', source: css }
+            { name: 'layout.css', source: layout },
+            { name: 'typography.css', source: heading }
         ];
     }
 }

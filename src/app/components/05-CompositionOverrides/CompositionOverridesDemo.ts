@@ -26,8 +26,8 @@ export class CompositionOverridesDemo {
         this.files = [
             { name: 'CompositionOverrides.ts', source: js },
             { name: 'CompositionOverrides.css', source: css },
-            { name: 'layout.css', source: css },
-            { name: 'typography.css', source: css }
+            { name: 'layout.css', source: layout },
+            { name: 'typography.css', source: heading }
         ];
     }
 }
