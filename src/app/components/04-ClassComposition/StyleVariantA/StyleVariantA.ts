@@ -1,9 +1,9 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-var styles = require("./StyleVariantA.css");
+var styles = require('./StyleVariantA.css');
 
 @Component({
     'selector': 'style-variant-a',
@@ -12,7 +12,5 @@ var styles = require("./StyleVariantA.css");
       </div>`
 })
 export class StyleVariantA {
-    onInit(){
-        console.log(styles.root);
-    }
+
 }

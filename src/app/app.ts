@@ -1,25 +1,20 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
 /*
- * Angular Directives
+ * Custom components
  */
-import {CORE_DIRECTIVES} from 'angular2/angular2';
+import {Logo} from './components/01-Logo/logo';
+import {Snippet} from './components/shared/Snippet/Snippet';
+import {ScopedSelectorsDemo} from './components/02-ScopedSelectors/ScopedSelectorsDemo';
+import {GlobalSelectorsDemo} from './components/03-GlobalSelectors/GlobalSelectorsDemo';
+import {ClassCompositionDemo} from './components/04-ClassComposition/ClassCompositionDemo';
+import {CompositionOverridesDemo} from './components/05-CompositionOverrides/CompositionOverridesDemo';
+import {ScopedAnimationsDemo} from './components/06-ScopedAnimations/ScopedAnimationsDemo';
 
-/*
-* Custom components
-*/
-import {Logo} from "./components/01-Logo/logo";
-import {Snippet} from "./components/shared/Snippet/Snippet";
-import {ScopedSelectorsDemo} from "./components/02-ScopedSelectors/ScopedSelectorsDemo";
-import {GlobalSelectorsDemo} from "./components/03-GlobalSelectors/GlobalSelectorsDemo";
-import {ClassCompositionDemo} from "./components/04-ClassComposition/ClassCompositionDemo";
-import {CompositionOverridesDemo} from "./components/05-CompositionOverrides/CompositionOverridesDemo";
-import {ScopedAnimationsDemo} from "./components/06-ScopedAnimations/ScopedAnimationsDemo";
-
-var styles = require("./app.css");
+var styles = require('./app.css');
 
 /*
  * App Component
@@ -30,7 +25,7 @@ var styles = require("./app.css");
     selector: 'app', // <app></app>
     // We need to tell Angular's compiler which directives are in our template.
     // Doing so will allow Angular to attach our behavior to an element
-    directives: [CORE_DIRECTIVES, Logo,ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassCompositionDemo, CompositionOverridesDemo, ScopedAnimationsDemo],
+    directives: [Logo, ScopedSelectorsDemo, Snippet, GlobalSelectorsDemo, ClassCompositionDemo, CompositionOverridesDemo, ScopedAnimationsDemo],
     // The template for our app
     template: `
     <div class="${styles.app}">
@@ -65,7 +60,7 @@ var styles = require("./app.css");
     `
 })
 export class App {
-    onInit() {
+    ngOnInit() {
         // Our API
     }
 }

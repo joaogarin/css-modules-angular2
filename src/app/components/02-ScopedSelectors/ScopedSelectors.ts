@@ -1,9 +1,9 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-var styles = require("./ScopedSelectors.css");
+var styles = require('./ScopedSelectors.css');
 
 @Component({
     'selector': 'scoped-selectors',

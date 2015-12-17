@@ -1,10 +1,10 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
-import {Snippet} from "../shared/Snippet/Snippet";
+import {Component, View} from 'angular2/core';
+import {Snippet} from '../shared/Snippet/Snippet';
 
-var styles = require("./GlobalSelectors.css");
+var styles = require('./GlobalSelectors.css');
 var js = require('!!raw!./GlobalSelectors.ts');
 var css = require('!!raw!./GlobalSelectors.css');
 
@@ -18,12 +18,12 @@ var css = require('!!raw!./GlobalSelectors.css');
     </snippet>`
 })
 export class GlobalSelectorsDemo {
-    files: any;
+    files:any;
 
-    onInit(){
+    ngOnInit() {
         this.files = [
-            { name: 'GlobalSelectors.ts', source: js },
-            { name: 'GlobalSelectors.css', source: css }
+            {name: 'GlobalSelectors.ts', source: js},
+            {name: 'GlobalSelectors.css', source: css}
         ];
     }
 }

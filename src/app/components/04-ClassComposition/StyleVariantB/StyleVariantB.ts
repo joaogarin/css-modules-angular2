@@ -1,9 +1,9 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-var styles = require("./StyleVariantB.css");
+var styles = require('./StyleVariantB.css');
 
 @Component({
     'selector': 'style-variant-b',

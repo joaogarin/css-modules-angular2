@@ -1,18 +1,31 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES5",
     "module": "commonjs",
-    "declaration": false,
-    "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "listFiles": false,
-    "outDir": "dist"
+    "sourceMap": true
   },
   "files": [
-    "src/app/bootstrap.ts"
-  ]
+    "typings/main.d.ts",
+    "src/app/app.ts",
+    "src/app/components/01-Logo/logo.ts",
+    "src/app/components/02-ScopedSelectors/ScopedSelectors.ts",
+    "src/app/components/02-ScopedSelectors/ScopedSelectorsDemo.ts",
+    "src/app/components/03-GlobalSelectors/GlobalSelectors.ts",
+    "src/app/components/03-GlobalSelectors/GlobalSelectorsDemo.ts",
+    "src/app/components/04-ClassComposition/ClassComposition.ts",
+    "src/app/components/04-ClassComposition/ClassCompositionDemo.ts",
+    "src/app/components/04-ClassComposition/StyleVariantA/StyleVariantA.ts",
+    "src/app/components/04-ClassComposition/StyleVariantB/StyleVariantB.ts",
+    "src/app/components/05-CompositionOverrides/CompositionOverrides.ts",
+    "src/app/components/05-CompositionOverrides/CompositionOverridesDemo.ts",
+    "src/app/components/06-ScopedAnimations/ScopedAnimations.ts",
+    "src/app/components/06-ScopedAnimations/ScopedAnimationsDemo.ts",
+    "src/app/components/shared/Snippet/Snippet.ts",
+    "src/bootstrap.ts",
+    "src/vendor.ts"
+  ],
+  "compileOnSave": false
 }

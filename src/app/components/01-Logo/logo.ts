@@ -1,9 +1,9 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-var styles = require("./logo.css");
+var styles = require('./logo.css');
 
 /*
  * Logo Component
@@ -11,7 +11,7 @@ var styles = require("./logo.css");
 @Component({
     selector: 'logo', // <app></app>
     template: `
-        <div class="${styles.logo}"/>
+        <div class="${styles.logo}"></div>
     `
 })
 export class Logo {

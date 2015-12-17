@@ -1,8 +1,8 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
-import {Snippet} from "../shared/Snippet/Snippet";
+import {Component, View} from 'angular2/core';
+import {Snippet} from '../shared/Snippet/Snippet';
 
 var styles = require('./CompositionOverrides.css');
 var js = require('!!raw!./CompositionOverrides.ts');
@@ -20,14 +20,14 @@ var heading = require('!!raw!./../shared/styles/typography.css');
     </snippet>`
 })
 export class CompositionOverridesDemo {
-    files: any;
+    files:any;
 
-    onInit(){
+    ngOnInit() {
         this.files = [
-            { name: 'CompositionOverrides.ts', source: js },
-            { name: 'CompositionOverrides.css', source: css },
-            { name: 'layout.css', source: layout },
-            { name: 'typography.css', source: heading }
+            {name: 'CompositionOverrides.ts', source: js},
+            {name: 'CompositionOverrides.css', source: css},
+            {name: 'layout.css', source: layout},
+            {name: 'typography.css', source: heading}
         ];
     }
 }

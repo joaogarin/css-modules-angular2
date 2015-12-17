@@ -1,14 +1,14 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-var styles = require("./ScopedAnimations.css");
+var styles = require('./ScopedAnimations.css');
 
 @Component({
     'selector': 'scoped-animations',
     'template': `<div class="${styles.root}">
-        <div class="${styles.ball}" />
+        <div class="${styles.ball}"></div>
       </div>`
 })
 export class ScopedAnimations {

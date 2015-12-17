@@ -1,10 +1,10 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
-import {Snippet} from "../shared/Snippet/Snippet";
+import {Component, View} from 'angular2/core';
+import {Snippet} from '../shared/Snippet/Snippet';
 
-var styles = require("./ScopedSelectors.css");
+var styles = require('./ScopedSelectors.css');
 var js = require('!!raw!./ScopedSelectors.ts');
 var css = require('!!raw!./ScopedSelectors.css');
 
@@ -18,12 +18,12 @@ var css = require('!!raw!./ScopedSelectors.css');
     </snippet>`
 })
 export class ScopedSelectorsDemo {
-    files: any;
+    files:any;
 
-    onInit(){
+    ngOnInit() {
         this.files = [
-            { name: 'ScopedSelectors.ts', source: js },
-            { name: 'ScopedSelectors.css', source: css }
+            {name: 'ScopedSelectors.ts', source: js},
+            {name: 'ScopedSelectors.css', source: css}
         ];
     }
 }

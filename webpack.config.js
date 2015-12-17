@@ -6,14 +6,8 @@
  * are defined at the bottom
  */
 var sliceArgs = Function.prototype.call.bind(Array.prototype.slice);
-var toString  = Function.prototype.call.bind(Object.prototype.toString);
-var NODE_ENV  = 'development';
-var pkg = require('./package.json');
-
-// Node
+var toString = Function.prototype.call.bind(Object.prototype.toString);
 var path = require('path');
-
-// NPM
 var webpack = require('webpack');
 
 // Webpack Plugins
@@ -24,48 +18,21 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
  * Config
  */
 module.exports = {
+  // for faster builds use 'eval'
   devtool: 'source-map',
   debug: true,
-  cache: true,
 
-  verbose: true,
-  displayErrorDetails: true,
-  stats: {
-    colors: true,
-    reasons: true
-  },
-
-  // our Development Server config
-  devServer: {
-    inline: true,
-    colors: true,
-    historyApiFallback: true,
-    contentBase: 'src/app',
-    publicPath: '/__build__'
-  },
-
-  //
   entry: {
-    'angular2': [
-      // Angular 2 Deps
-      'zone.js',
-      'reflect-metadata',
-      // to ensure these modules are grouped together in one file
-      'angular2/angular2',
-      'angular2/core',
-    ],
-    'app': [
-      './src/app/bootstrap'
-    ]
+    'vendor': './src/vendor.ts',
+    'app': './src/bootstrap.ts' // our angular app
   },
 
   // Config for our build files
   output: {
     path: root('__build__'),
     filename: '[name].js',
-    sourceMapFilename: '[name].js.map',
+    sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
-    // publicPath: 'http://mycdn.com/'
   },
 
   resolve: {
@@ -75,78 +42,56 @@ module.exports = {
   },
 
   module: {
+    preLoaders: [ { test: /\.ts$/, loader: 'tslint-loader' } ],
     loaders: [
       //{ test: /\.css$/,   loader: 'raw' },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') },
 
-      { test: /\.ts$/,    loader: 'ts',
+      // Support for .ts files.
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
         query: {
           'ignoreDiagnostics': [
-            // 2300, // 2300 -> Duplicate identifier
-            // 2309 // 2309 -> An export assignment cannot be used in a module with other exported elements.
+            2403, // 2403 -> Subsequent variable declarations
+            2300, // 2300 Duplicate identifier
+            2374, // 2374 -> Duplicate number index signature
+            2375  // 2375 -> Duplicate string index signature
           ]
         },
-        exclude: [
-          /\.min\.js$/,
-          /\.spec\.ts$/,
-          /\.e2e\.ts$/,
-          /web_modules/,
-          /test/,
-          /node_modules/
-        ]
+        exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/ ]
       },
 
       { test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
     ],
-    noParse: [
-      /rtts_assert\/src\/rtts_assert/,
-      /reflect-metadata/
-    ]
+    noParse: [ /zone\.js\/dist\/.+/, /angular2\/bundles\/.+/ ],
+  },
+
+  plugins: [
+    new ExtractTextPlugin('style.css', { allChunks: true }),
+    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] })
+  ],
+
+  // Other module loader config
+  tslint: {
+    emitErrors: false,
+    failOnHint: false
+  },
+  // our Development Server config
+  devServer: {
+    historyApiFallback: true,
+    contentBase: 'src/app',
+    publicPath: '/__build__'
   },
 
   postcss: [
     require('autoprefixer-core'),
     require('postcss-color-rebeccapurple')
   ],
-
-  plugins: [
-    new ExtractTextPlugin('style.css', { allChunks: true }),
-    new CommonsChunkPlugin({
-      name: 'angular2',
-      minChunks: Infinity,
-      filename: 'angular2.js'
-    }),
-    new CommonsChunkPlugin({
-      name: 'common',
-      filename: 'common.js'
-    })
-  ],
-
-  /*
-   * When using `templateUrl` and `styleUrls` please use `__filename`
-   * rather than `module.id` for `moduleId` in `@View`
-   */
-  node: {
-    crypto: false,
-    __filename: true
-  }
 };
 
 // Helper functions
-
-function env(configEnv) {
-  if (configEnv === undefined) { return configEnv; }
-  switch (toString(configEnv[NODE_ENV])) {
-    case '[object Object]'    : return Object.assign({}, configEnv.all || {}, configEnv[NODE_ENV]);
-    case '[object Array]'     : return [].concat(configEnv.all || [], configEnv[NODE_ENV]);
-    case '[object Undefined]' : return configEnv.all;
-    default                   : return configEnv[NODE_ENV];
-  }
-}
-
-function getBanner() {
-  return 'Angular2 Webpack Starter v'+ pkg.version +' by @gdi2990 from @AngularClass';
-}
 
 function root(args) {
   args = sliceArgs(arguments, 0);

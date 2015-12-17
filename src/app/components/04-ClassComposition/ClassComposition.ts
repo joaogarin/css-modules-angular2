@@ -1,10 +1,10 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 
-import {StyleVariantA} from "./StyleVariantA/StyleVariantA";
-import {StyleVariantB} from "./StyleVariantB/StyleVariantB";
+import {StyleVariantA} from './StyleVariantA/StyleVariantA';
+import {StyleVariantB} from './StyleVariantB/StyleVariantB';
 
 @Component({
     'directives': [StyleVariantA,StyleVariantB],
