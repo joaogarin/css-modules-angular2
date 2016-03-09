@@ -9,26 +9,25 @@
   <meta name="description" content="Angular2 Webpack Starter by @gdi2990 from @AngularClass">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <!-- base url -->
-  <base href="/">
+  <base href="<%= webpackConfig.metadata.baseUrl %>">
 
   <!-- use http://www.favicon-generator.org/ to replace files in public/icon-->
   <link rel="icon" type="image/png" href="angular-shield.png">
 
   <!-- the compiled CSS modules file -->
-  <link rel="stylesheet" type="text/css" href="/__build__/style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 <body>
 
-  <app>
-    Loading...
-  </app>
+<app>
+  Loading...
+</app>
 
-  <!-- Common files to be cached -->
-  <script src="/__build__/common.js"></script>
-  <!-- Vendor files -->
-  <script src="/__build__/vendor.js"></script>
-  <!-- App script -->
-  <script src="/__build__/app.js"></script>
+<% if (webpackConfig.metadata.ENV === 'development') { %>
+<!-- Webpack Dev Server reload -->
+<script src="http://<%= webpackConfig.metadata.host %>:<%= webpackConfig.metadata.port %>/webpack-dev-server.js"></script>
+<% } %>
+
 </body>
 </html>

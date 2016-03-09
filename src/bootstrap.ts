@@ -2,9 +2,9 @@
  * Providers provided by Angular
  */
 import {bootstrap} from 'angular2/platform/browser';
+import {provide} from 'angular2/core';
 import {ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/common_dom';
-import {ROUTER_PROVIDERS} from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
 
 /*
  * App Component
@@ -19,9 +19,9 @@ import {App} from './app/app';
 export function main() {
   return bootstrap(App, [
     // These are dependencies of our App
-    HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    ELEMENT_PROBE_PROVIDERS
+    ELEMENT_PROBE_PROVIDERS,
+    provide(LocationStrategy, { useClass: HashLocationStrategy })
   ])
       .catch(err => console.error(err));
 }
