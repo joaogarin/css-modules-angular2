@@ -10,7 +10,7 @@ var path = require('path');
 var webpack = require('webpack');
 var CopyWebpackPlugin  = require('copy-webpack-plugin');
 var HtmlWebpackPlugin  = require('html-webpack-plugin');
-var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
+var ENV = process.env.ENV = process.env.NODE_ENV = 'production';
 
 // Webpack Plugins
 var CommonsChunkPlugin   = webpack.optimize.CommonsChunkPlugin;
@@ -18,7 +18,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var metadata = {
   title: 'Angular2 Webpack Starter',
-  baseUrl: '/',
+  baseUrl: '/css-modules-angular2/',
   host: 'localhost',
   port: 3000,
   ENV: ENV
@@ -40,7 +40,7 @@ module.exports = {
 
   // Config for our build files
   output: {
-    path: root('dist'),
+    path: root(),
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
