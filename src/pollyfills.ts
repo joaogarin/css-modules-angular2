@@ -2,7 +2,6 @@
 // import 'ie-shim';
 import 'es6-shim';
 // (these modules are what are in 'angular2/bundles/angular2-polyfills' so don't use that here)
-import 'es6-promise';
 import 'es7-reflect-metadata';
 require('zone.js/dist/zone.js');
 
