@@ -70,8 +70,8 @@ module.exports = {
             2374, // 2374 -> Duplicate number index signature
             2375  // 2375 -> Duplicate string index signature
           ]
-        },
-        exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/ ]
+        }
+        //,exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/ ] temporarily due to zone js problem
       },
 
       { test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
