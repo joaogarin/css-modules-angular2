@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/core';
+import {Component} from 'angular2/core';
 
 import {StyleVariantA} from './StyleVariantA/StyleVariantA';
 import {StyleVariantB} from './StyleVariantB/StyleVariantB';

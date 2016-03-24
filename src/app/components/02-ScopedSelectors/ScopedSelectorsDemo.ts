@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {Snippet} from '../shared/Snippet/Snippet';
 
 var styles = require('./ScopedSelectors.css');

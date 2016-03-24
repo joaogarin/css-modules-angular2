@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component, View} from 'angular2/core';
+import {Component} from 'angular2/core';
 
 var styles = require('./CompositionOverrides.css');
 
