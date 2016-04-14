@@ -23,6 +23,10 @@ var styles = require('./app.css');
  * Demos several different uses of CSS Modules with different components
  * 
  * Each component represents different use cases for CSS Modules
+ * 
+ * Angular will warn the template is too big but just for the purpose of showing the components all together 
+ * I will leave them all in the same template. We could also use a separate HTML file for the template using templateUrl property
+ * of the component decorator
  */
 @Component({
     // The selector is what angular internally uses
