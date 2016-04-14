@@ -3,6 +3,10 @@
  */
 import {Component} from 'angular2/core';
 
+/**
+ * Import Style variants components to be shown together in this
+ * components
+ */
 import {StyleVariantA} from './StyleVariantA/StyleVariantA';
 import {StyleVariantB} from './StyleVariantB/StyleVariantB';
 

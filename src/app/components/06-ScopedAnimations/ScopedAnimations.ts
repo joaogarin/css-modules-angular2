@@ -3,6 +3,11 @@
  */
 import {Component} from 'angular2/core';
 
+/**
+ * Include ScopedAnimations css to be injected in the template
+ * Webpack will process this CSS in module mode
+ * See the webpack.config.js in the root folder
+ */
 var styles = require('./ScopedAnimations.css');
 
 @Component({

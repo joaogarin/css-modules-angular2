@@ -2,14 +2,24 @@
  * Angular 2 decorators and services
  */
 import {Component} from 'angular2/core';
+
+/**
+ * Import the snippet component
+ */
 import {Snippet} from '../shared/Snippet/Snippet';
 
+/**
+ * Include all necessary CSS and ts
+ */
 var styles = require('./CompositionOverrides.css');
 var js = require('!!raw!./CompositionOverrides.ts');
 var css = require('!!raw!./CompositionOverrides.css');
 var layout = require('!!raw!./../shared/styles/layout.css');
 var heading = require('!!raw!./../shared/styles/typography.css');
 
+/**
+ * Wraps the component in a snippet component
+ */
 @Component({
     directives: [Snippet],
     'selector': 'composition-overrides-demo',

@@ -2,13 +2,23 @@
  * Angular 2 decorators and services
  */
 import {Component} from 'angular2/core';
+
+/**
+ * Import the snippet component
+ */
 import {Snippet} from '../shared/Snippet/Snippet';
 
+/**
+ * Include all necessary CSS and ts
+ */
 var styles = require('./ScopedAnimations.css');
 var js = require('!!raw!./ScopedAnimations.ts');
 var css = require('!!raw!./ScopedAnimations.css');
 var animations = require('!!raw!./../shared/styles/animations.css');
 
+/**
+ * Wraps the component in a snippet component
+ */
 @Component({
     directives: [Snippet],
     'selector': 'scoped-animations-demo',

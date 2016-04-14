@@ -2,15 +2,29 @@
  * Angular 2 decorators and services
  */
 import {Component} from 'angular2/core';
+
+/**
+ * Import the snippet component
+ */
 import {Snippet} from '../shared/Snippet/Snippet';
+
+/**
+ * Import the variants components
+ */
 import {StyleVariantA} from './StyleVariantA/StyleVariantA';
 import {StyleVariantB} from './StyleVariantB/StyleVariantB';
 
+/**
+ * Include all necessary CSS
+ */
 var js = require('!!raw!./StyleVariantA/StyleVariantA.ts');
 var css = require('!!raw!./StyleVariantA/StyleVariantA.css');
 var layout = require('!!raw!./../shared/styles/layout.css');
 var heading = require('!!raw!./../shared/styles/typography.css');
 
+/**
+ * Wraps the two components in a snippet component
+ */
 @Component({
     directives: [Snippet, StyleVariantA, StyleVariantB],
     'selector': 'class-composition-demo',

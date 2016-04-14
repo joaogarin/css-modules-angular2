@@ -2,6 +2,10 @@
  * Angular 2 decorators and services
  */
 import {Component} from 'angular2/core';
+
+/**
+ * Import the snippet component
+ */
 import {Snippet} from '../shared/Snippet/Snippet';
 
 /**
