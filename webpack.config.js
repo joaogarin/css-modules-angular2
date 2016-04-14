@@ -1,4 +1,4 @@
-// @AngularClass
+// @joaogarin
 
 /*
  * Helper
@@ -17,7 +17,7 @@ var CommonsChunkPlugin   = webpack.optimize.CommonsChunkPlugin;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var metadata = {
-  title: 'Angular2 Webpack Starter',
+  title: 'Css Modules with angular2',
   baseUrl: '/',
   host: 'localhost',
   port: 3000,
