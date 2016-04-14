@@ -1,7 +1,7 @@
 {
-  "name": "angular2-webpack-starter",
+  "name": "css-modules-angular2",
   "version": "0.0.0",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E), Karma, Protractor, Jasmine, TypeScript, and Webpack by AngularClass",
+  "description": "A working demo of CSS Modules, using Webpack's css-loader in module mode and angular2",
   "main": "",
   "scripts": {
     "webpack": "webpack",
@@ -20,20 +20,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
+    "url": "https://github.com/joaogarin/css-modules-angular2.git"
   },
-  "author": "gdi2290 <github@gdi2290.com>",
+  "author": "joaogarin <github@joaogarin.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
+    "url": "https://github.com/joaogarin/css-modules-angular2/issues"
   },
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
+  "homepage": "http://joaogarin.github.io/css-modules-angular2/",
   "dependencies": {
-    "angular2": "2.0.0-beta.12",
+    "angular2": "2.0.0-beta.14",
     "es6-shim": "^0.35.0",
     "es7-reflect-metadata": "^1.6.0",
     "rxjs": "5.0.0-beta.2",
-    "zone.js": "0.6.6"
+    "zone.js": "0.6.11"
   },
   "devDependencies": {
     "compression-webpack-plugin": "^0.3.0",
