@@ -4,10 +4,18 @@
 import {Component} from 'angular2/core';
 import {Snippet} from '../shared/Snippet/Snippet';
 
+/**
+ * Include ScopedSelectors css to be injected in the template
+ * Webpack will process this CSS in module mode
+ * See the webpack.config.js in the root folder
+ */
 var styles = require('./ScopedSelectors.css');
 var js = require('!!raw!./ScopedSelectors.ts');
 var css = require('!!raw!./ScopedSelectors.css');
 
+/**
+ * Wraps the main component in a snippet component
+ */
 @Component({
     directives: [Snippet],
     'selector': 'scoped-selectors-demo',

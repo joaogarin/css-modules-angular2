@@ -19,6 +19,10 @@ var styles = require('./app.css');
 /*
  * App Component
  * Top Level Component
+ * 
+ * Demos several different uses of CSS Modules with different components
+ * 
+ * Each component represents different use cases for CSS Modules
  */
 @Component({
     // The selector is what angular internally uses
