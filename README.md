@@ -8,7 +8,7 @@ A demo of this repo can be found here : http://joaogarin.github.io/css-modules-a
 
 ```bash
 $ npm install
-$ npm start & open http://localhost:8080
+$ npm start & open http://localhost:3000
 ```
 
 ## License
