@@ -57,7 +57,7 @@ module.exports = {
     preLoaders: [ { test: /\.ts$/, loader: 'tslint-loader' } ],
     loaders: [
       //{ test: /\.css$/,   loader: 'raw' },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&sourceMap&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader?sourceMap') },
 
       // Support for .ts files.
       {
