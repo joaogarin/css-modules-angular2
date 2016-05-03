@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
 /*
  * Custom components
@@ -19,12 +19,12 @@ var styles = require('./app.css');
 /*
  * App Component
  * Top Level Component
- * 
+ *
  * Demos several different uses of CSS Modules with different components
- * 
+ *
  * Each component represents different use cases for CSS Modules
- * 
- * Angular will warn the template is too big but just for the purpose of showing the components all together 
+ *
+ * Angular will warn the template is too big but just for the purpose of showing the components all together
  * I will leave them all in the same template. We could also use a separate HTML file for the template using templateUrl property
  * of the component decorator
  */

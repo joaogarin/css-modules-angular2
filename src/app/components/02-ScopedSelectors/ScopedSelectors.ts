@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 
 /**
  * Include ScopedSelectors css to be injected in the template

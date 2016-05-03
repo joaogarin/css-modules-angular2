@@ -1,10 +1,14 @@
 /*
  * Providers provided by Angular
  */
-import {bootstrap} from 'angular2/platform/browser';
-import {provide} from 'angular2/core';
-import {ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/common_dom';
-import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+ import {provide, enableProdMode} from '@angular/core';
+ import {bootstrap} from '@angular/platform-browser-dynamic'
+
+ // Angular 2
+ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+
+ //ROUTER
+ import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 
 /*
  * App Component
@@ -20,7 +24,6 @@ export function main() {
   return bootstrap(App, [
     // These are dependencies of our App
     ROUTER_PROVIDERS,
-    ELEMENT_PROBE_PROVIDERS,
     provide(LocationStrategy, { useClass: HashLocationStrategy })
   ])
       .catch(err => console.error(err));
