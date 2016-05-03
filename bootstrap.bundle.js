@@ -9647,7 +9647,7 @@ webpackJsonp([1,0],[
 	            'inputs': ['files'],
 	            'selector': 'snippet',
 	            'directives': [common_1.NgFor],
-	            'template': "<div class=" + styles.output + ">\n                  <div class=" + styles.fileName + ">Output</div>\n                  <div class=" + styles.outputContent + ">\n                    <ng-content></ng-content>\n                  </div>\n                </div>\n                <div *ngFor=\"#file of files\" class=" + styles.file + ">\n                  <div class=" + styles.fileName + ">{{ file.name }}</div>\n                  <pre class=" + styles.pre + ">{{ file.source }}</pre>\n                </div>"
+	            'template': "<div class=" + styles.output + ">\n                  <div class=" + styles.fileName + ">Output</div>\n                  <div class=" + styles.outputContent + ">\n                    <ng-content></ng-content>\n                  </div>\n                </div>\n                <div *ngFor=\"let file of files\" class=" + styles.file + ">\n                  <div class=" + styles.fileName + ">{{ file.name }}</div>\n                  <pre class=" + styles.pre + ">{{ file.source }}</pre>\n                </div>"
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Snippet);
