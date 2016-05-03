@@ -6,10 +6,10 @@ webpackJsonp([2,0],{
 	"use strict";
 	// Polyfills
 	// import 'ie-shim';
-	__webpack_require__(256);
+	__webpack_require__(308);
 	// (these modules are what are in 'angular2/bundles/angular2-polyfills' so don't use that here)
-	__webpack_require__(257);
-	__webpack_require__(302);
+	__webpack_require__(309);
+	__webpack_require__(353);
 	if (false) {
 	    // Production
 	    // RxJS
@@ -20,12 +20,12 @@ webpackJsonp([2,0],{
 	else {
 	    // Development
 	    Error['stackTraceLimit'] = Infinity;
-	    __webpack_require__(301);
+	    __webpack_require__(352);
 	    // RxJS
 	    // to include every operator uncomment
 	    // require('rxjs/Rx');
-	    __webpack_require__(281);
-	    __webpack_require__(282);
+	    __webpack_require__(334);
+	    __webpack_require__(335);
 	}
 	// For vendors for example jQuery, Lodash, angular2-jwt just import them anywhere in your app
 	// Also see custom_typings.d.ts as you also need to do `typings install x` where `x` is your module
@@ -33,7 +33,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 15:
+/***/ 17:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {"use strict";
@@ -54,7 +54,7 @@ webpackJsonp([2,0],{
 	    exports.root = freeGlobal;
 	}
 	//# sourceMappingURL=root.js.map
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(116)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(136)(module), (function() { return this; }())))
 
 /***/ },
 
@@ -62,11 +62,9 @@ webpackJsonp([2,0],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(15);
-	var SymbolShim_1 = __webpack_require__(30);
-	var toSubscriber_1 = __webpack_require__(115);
-	var tryCatch_1 = __webpack_require__(50);
-	var errorObject_1 = __webpack_require__(21);
+	var root_1 = __webpack_require__(17);
+	var observable_1 = __webpack_require__(77);
+	var toSubscriber_1 = __webpack_require__(134);
 	/**
 	 * A representation of any set of values over any amount of time. This the most basic building block
 	 * of RxJS.
@@ -76,10 +74,10 @@ webpackJsonp([2,0],{
 	var Observable = (function () {
 	    /**
 	     * @constructor
-	     * @param {Function} subscribe the function that is
-	     * called when the Observable is initially subscribed to. This function is given a Subscriber, to which new values
-	     * can be `next`ed, or an `error` method can be called to raise an error, or `complete` can be called to notify
-	     * of a successful completion.
+	     * @param {Function} subscribe the function that is  called when the Observable is
+	     * initially subscribed to. This function is given a Subscriber, to which new values
+	     * can be `next`ed, or an `error` method can be called to raise an error, or
+	     * `complete` can be called to notify of a successful completion.
 	     */
 	    function Observable(subscribe) {
 	        this._isScalar = false;
@@ -88,11 +86,11 @@ webpackJsonp([2,0],{
 	        }
 	    }
 	    /**
+	     * Creates a new Observable, with this Observable as the source, and the passed
+	     * operator defined as the new observable's operator.
 	     * @method lift
 	     * @param {Operator} operator the operator defining the operation to take on the observable
-	     * @returns {Observable} a new observable with the Operator applied
-	     * @description creates a new Observable, with this Observable as the source, and the passed
-	     * operator defined as the new observable's operator.
+	     * @return {Observable} a new observable with the Operator applied
 	     */
 	    Observable.prototype.lift = function (operator) {
 	        var observable = new Observable();
@@ -101,42 +99,37 @@ webpackJsonp([2,0],{
 	        return observable;
 	    };
 	    /**
+	     * Registers handlers for handling emitted values, error and completions from the observable, and
+	     *  executes the observable's subscriber function, which will take action to set up the underlying data stream
 	     * @method subscribe
 	     * @param {PartialObserver|Function} observerOrNext (optional) either an observer defining all functions to be called,
 	     *  or the first of three possible handlers, which is the handler for each value emitted from the observable.
 	     * @param {Function} error (optional) a handler for a terminal event resulting from an error. If no error handler is provided,
 	     *  the error will be thrown as unhandled
 	     * @param {Function} complete (optional) a handler for a terminal event resulting from successful completion.
-	     * @returns {Subscription} a subscription reference to the registered handlers
-	     * @description registers handlers for handling emitted values, error and completions from the observable, and
-	     *  executes the observable's subscriber function, which will take action to set up the underlying data stream
+	     * @return {ISubscription} a subscription reference to the registered handlers
 	     */
 	    Observable.prototype.subscribe = function (observerOrNext, error, complete) {
 	        var operator = this.operator;
-	        var subscriber = toSubscriber_1.toSubscriber(observerOrNext, error, complete);
-	        if (operator) {
-	            subscriber.add(this._subscribe(operator.call(subscriber)));
-	        }
-	        else {
-	            subscriber.add(this._subscribe(subscriber));
-	        }
-	        if (subscriber.syncErrorThrowable) {
-	            subscriber.syncErrorThrowable = false;
-	            if (subscriber.syncErrorThrown) {
-	                throw subscriber.syncErrorValue;
+	        var sink = toSubscriber_1.toSubscriber(observerOrNext, error, complete);
+	        sink.add(operator ? operator.call(sink, this) : this._subscribe(sink));
+	        if (sink.syncErrorThrowable) {
+	            sink.syncErrorThrowable = false;
+	            if (sink.syncErrorThrown) {
+	                throw sink.syncErrorValue;
 	            }
 	        }
-	        return subscriber;
+	        return sink;
 	    };
 	    /**
 	     * @method forEach
 	     * @param {Function} next a handler for each value emitted by the observable
-	     * @param {any} [thisArg] a `this` context for the `next` handler function
 	     * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
-	     * @returns {Promise} a promise that either resolves on observable completion or
+	     * @return {Promise} a promise that either resolves on observable completion or
 	     *  rejects with the handled error
 	     */
-	    Observable.prototype.forEach = function (next, thisArg, PromiseCtor) {
+	    Observable.prototype.forEach = function (next, PromiseCtor) {
+	        var _this = this;
 	        if (!PromiseCtor) {
 	            if (root_1.root.Rx && root_1.root.Rx.config && root_1.root.Rx.config.Promise) {
 	                PromiseCtor = root_1.root.Rx.config.Promise;
@@ -148,12 +141,29 @@ webpackJsonp([2,0],{
 	        if (!PromiseCtor) {
 	            throw new Error('no Promise impl found');
 	        }
-	        var source = this;
 	        return new PromiseCtor(function (resolve, reject) {
-	            source.subscribe(function (value) {
-	                var result = tryCatch_1.tryCatch(next).call(thisArg, value);
-	                if (result === errorObject_1.errorObject) {
-	                    reject(errorObject_1.errorObject.e);
+	            var subscription = _this.subscribe(function (value) {
+	                if (subscription) {
+	                    // if there is a subscription, then we can surmise
+	                    // the next handling is asynchronous. Any errors thrown
+	                    // need to be rejected explicitly and unsubscribe must be
+	                    // called manually
+	                    try {
+	                        next(value);
+	                    }
+	                    catch (err) {
+	                        reject(err);
+	                        subscription.unsubscribe();
+	                    }
+	                }
+	                else {
+	                    // if there is NO subscription, then we're getting a nexted
+	                    // value synchronously during subscription. We can just call it.
+	                    // If it errors, Observable's `subscribe` imple will ensure the
+	                    // unsubscription logic is called, then synchronously rethrow the error.
+	                    // After that, Promise will trap the error and send it
+	                    // down the rejection path.
+	                    next(value);
 	                }
 	            }, reject, resolve);
 	        });
@@ -162,21 +172,22 @@ webpackJsonp([2,0],{
 	        return this.source.subscribe(subscriber);
 	    };
 	    /**
+	     * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
 	     * @method Symbol.observable
-	     * @returns {Observable} this instance of the observable
-	     * @description an interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+	     * @return {Observable} this instance of the observable
 	     */
-	    Observable.prototype[SymbolShim_1.SymbolShim.observable] = function () {
+	    Observable.prototype[observable_1.$$observable] = function () {
 	        return this;
 	    };
 	    // HACK: Since TypeScript inherits static properties too, we have to
 	    // fight against TypeScript here so Subject can have a different static create signature
 	    /**
-	     * @static
+	     * Creates a new cold Observable by calling the Observable constructor
+	     * @static true
+	     * @owner Observable
 	     * @method create
 	     * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
-	     * @returns {Observable} a new cold observable
-	     * @description creates a new cold Observable by calling the Observable constructor
+	     * @return {Observable} a new cold observable
 	     */
 	    Observable.create = function (subscribe) {
 	        return new Observable(subscribe);
@@ -188,7 +199,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 20:
+/***/ 34:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -197,12 +208,30 @@ webpackJsonp([2,0],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isFunction_1 = __webpack_require__(49);
-	var Subscription_1 = __webpack_require__(48);
-	var rxSubscriber_1 = __webpack_require__(29);
-	var Observer_1 = __webpack_require__(113);
+	var isFunction_1 = __webpack_require__(51);
+	var Subscription_1 = __webpack_require__(49);
+	var rxSubscriber_1 = __webpack_require__(43);
+	var Observer_1 = __webpack_require__(131);
+	/**
+	 * Implements the {@link Observer} interface and extends the
+	 * {@link Subscription} class. While the {@link Observer} is the public API for
+	 * consuming the values of an {@link Observable}, all Observers get converted to
+	 * a Subscriber, in order to provide Subscription-like capabilities such as
+	 * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
+	 * implementing operators, but it is rarely used as a public API.
+	 *
+	 * @class Subscriber<T>
+	 */
 	var Subscriber = (function (_super) {
 	    __extends(Subscriber, _super);
+	    /**
+	     * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+	     * defined Observer or a `next` callback function.
+	     * @param {function(e: ?any): void} [error] The `error` callback of an
+	     * Observer.
+	     * @param {function(): void} [complete] The `complete` callback of an
+	     * Observer.
+	     */
 	    function Subscriber(destinationOrNext, error, complete) {
 	        _super.call(this);
 	        this.syncErrorValue = null;
@@ -221,6 +250,7 @@ webpackJsonp([2,0],{
 	                if (typeof destinationOrNext === 'object') {
 	                    if (destinationOrNext instanceof Subscriber) {
 	                        this.destination = destinationOrNext;
+	                        this.destination.add(this);
 	                    }
 	                    else {
 	                        this.syncErrorThrowable = true;
@@ -234,22 +264,53 @@ webpackJsonp([2,0],{
 	                break;
 	        }
 	    }
+	    /**
+	     * A static factory for a Subscriber, given a (potentially partial) definition
+	     * of an Observer.
+	     * @param {function(x: ?T): void} [next] The `next` callback of an Observer.
+	     * @param {function(e: ?any): void} [error] The `error` callback of an
+	     * Observer.
+	     * @param {function(): void} [complete] The `complete` callback of an
+	     * Observer.
+	     * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
+	     * Observer represented by the given arguments.
+	     */
 	    Subscriber.create = function (next, error, complete) {
 	        var subscriber = new Subscriber(next, error, complete);
 	        subscriber.syncErrorThrowable = false;
 	        return subscriber;
 	    };
+	    /**
+	     * The {@link Observer} callback to receive notifications of type `next` from
+	     * the Observable, with a value. The Observable may call this method 0 or more
+	     * times.
+	     * @param {T} [value] The `next` value.
+	     * @return {void}
+	     */
 	    Subscriber.prototype.next = function (value) {
 	        if (!this.isStopped) {
 	            this._next(value);
 	        }
 	    };
+	    /**
+	     * The {@link Observer} callback to receive notifications of type `error` from
+	     * the Observable, with an attached {@link Error}. Notifies the Observer that
+	     * the Observable has experienced an error condition.
+	     * @param {any} [err] The `error` exception.
+	     * @return {void}
+	     */
 	    Subscriber.prototype.error = function (err) {
 	        if (!this.isStopped) {
 	            this.isStopped = true;
 	            this._error(err);
 	        }
 	    };
+	    /**
+	     * The {@link Observer} callback to receive a valueless notification of type
+	     * `complete` from the Observable. Notifies the Observer that the Observable
+	     * has finished sending push-based notifications.
+	     * @return {void}
+	     */
 	    Subscriber.prototype.complete = function () {
 	        if (!this.isStopped) {
 	            this.isStopped = true;
@@ -274,12 +335,17 @@ webpackJsonp([2,0],{
 	        this.destination.complete();
 	        this.unsubscribe();
 	    };
-	    Subscriber.prototype[rxSubscriber_1.rxSubscriber] = function () {
+	    Subscriber.prototype[rxSubscriber_1.$$rxSubscriber] = function () {
 	        return this;
 	    };
 	    return Subscriber;
 	}(Subscription_1.Subscription));
 	exports.Subscriber = Subscriber;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
 	var SafeSubscriber = (function (_super) {
 	    __extends(SafeSubscriber, _super);
 	    function SafeSubscriber(_parent, observerOrNext, error, complete) {
@@ -295,6 +361,10 @@ webpackJsonp([2,0],{
 	            next = observerOrNext.next;
 	            error = observerOrNext.error;
 	            complete = observerOrNext.complete;
+	            if (isFunction_1.isFunction(context.unsubscribe)) {
+	                this.add(context.unsubscribe.bind(context));
+	            }
+	            context.unsubscribe = this.unsubscribe.bind(this);
 	        }
 	        this._context = context;
 	        this._next = next;
@@ -386,128 +456,61 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 21:
-/***/ function(module, exports) {
-
-	"use strict";
-	// typeof any so that it we don't have to cast when comparing a result to the error object
-	exports.errorObject = { e: {} };
-	//# sourceMappingURL=errorObject.js.map
-
-/***/ },
-
-/***/ 29:
+/***/ 43:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SymbolShim_1 = __webpack_require__(30);
-	/**
-	 * rxSubscriber symbol is a symbol for retreiving an "Rx safe" Observer from an object
-	 * "Rx safety" can be defined as an object that has all of the traits of an Rx Subscriber,
-	 * including the ability to add and remove subscriptions to the subscription chain and
-	 * guarantees involving event triggering (can't "next" after unsubscription, etc).
-	 */
-	exports.rxSubscriber = SymbolShim_1.SymbolShim.for('rxSubscriber');
+	var root_1 = __webpack_require__(17);
+	var Symbol = root_1.root.Symbol;
+	exports.$$rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
+	    Symbol.for('rxSubscriber') : '@@rxSubscriber';
 	//# sourceMappingURL=rxSubscriber.js.map
 
 /***/ },
 
-/***/ 30:
+/***/ 49:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(15);
-	function polyfillSymbol(root) {
-	    var Symbol = ensureSymbol(root);
-	    ensureIterator(Symbol, root);
-	    ensureObservable(Symbol);
-	    ensureFor(Symbol);
-	    return Symbol;
-	}
-	exports.polyfillSymbol = polyfillSymbol;
-	function ensureFor(Symbol) {
-	    if (!Symbol.for) {
-	        Symbol.for = symbolForPolyfill;
-	    }
-	}
-	exports.ensureFor = ensureFor;
-	var id = 0;
-	function ensureSymbol(root) {
-	    if (!root.Symbol) {
-	        root.Symbol = function symbolFuncPolyfill(description) {
-	            return "@@Symbol(" + description + "):" + id++;
-	        };
-	    }
-	    return root.Symbol;
-	}
-	exports.ensureSymbol = ensureSymbol;
-	function symbolForPolyfill(key) {
-	    return '@@' + key;
-	}
-	exports.symbolForPolyfill = symbolForPolyfill;
-	function ensureIterator(Symbol, root) {
-	    if (!Symbol.iterator) {
-	        if (typeof Symbol.for === 'function') {
-	            Symbol.iterator = Symbol.for('iterator');
-	        }
-	        else if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
-	            // Bug for mozilla version
-	            Symbol.iterator = '@@iterator';
-	        }
-	        else if (root.Map) {
-	            // es6-shim specific logic
-	            var keys = Object.getOwnPropertyNames(root.Map.prototype);
-	            for (var i = 0; i < keys.length; ++i) {
-	                var key = keys[i];
-	                if (key !== 'entries' && key !== 'size' && root.Map.prototype[key] === root.Map.prototype['entries']) {
-	                    Symbol.iterator = key;
-	                    break;
-	                }
-	            }
-	        }
-	        else {
-	            Symbol.iterator = '@@iterator';
-	        }
-	    }
-	}
-	exports.ensureIterator = ensureIterator;
-	function ensureObservable(Symbol) {
-	    if (!Symbol.observable) {
-	        if (typeof Symbol.for === 'function') {
-	            Symbol.observable = Symbol.for('observable');
-	        }
-	        else {
-	            Symbol.observable = '@@observable';
-	        }
-	    }
-	}
-	exports.ensureObservable = ensureObservable;
-	exports.SymbolShim = polyfillSymbol(root_1.root);
-	//# sourceMappingURL=SymbolShim.js.map
-
-/***/ },
-
-/***/ 48:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var isArray_1 = __webpack_require__(72);
-	var isObject_1 = __webpack_require__(114);
-	var isFunction_1 = __webpack_require__(49);
-	var tryCatch_1 = __webpack_require__(50);
-	var errorObject_1 = __webpack_require__(21);
+	var isArray_1 = __webpack_require__(78);
+	var isObject_1 = __webpack_require__(133);
+	var isFunction_1 = __webpack_require__(51);
+	var tryCatch_1 = __webpack_require__(135);
+	var errorObject_1 = __webpack_require__(50);
+	var UnsubscriptionError_1 = __webpack_require__(132);
+	/**
+	 * Represents a disposable resource, such as the execution of an Observable. A
+	 * Subscription has one important method, `unsubscribe`, that takes no argument
+	 * and just disposes the resource held by the subscription.
+	 *
+	 * Additionally, subscriptions may be grouped together through the `add()`
+	 * method, which will attach a child Subscription to the current Subscription.
+	 * When a Subscription is unsubscribed, all its children (and its grandchildren)
+	 * will be unsubscribed as well.
+	 *
+	 * @class Subscription
+	 */
 	var Subscription = (function () {
-	    function Subscription(_unsubscribe) {
+	    /**
+	     * @param {function(): void} [unsubscribe] A function describing how to
+	     * perform the disposal of resources when the `unsubscribe` method is called.
+	     */
+	    function Subscription(unsubscribe) {
+	        /**
+	         * A flag to indicate whether this Subscription has already been unsubscribed.
+	         * @type {boolean}
+	         */
 	        this.isUnsubscribed = false;
-	        if (_unsubscribe) {
-	            this._unsubscribe = _unsubscribe;
+	        if (unsubscribe) {
+	            this._unsubscribe = unsubscribe;
 	        }
 	    }
+	    /**
+	     * Disposes the resources held by the subscription. May, for instance, cancel
+	     * an ongoing Observable execution or cancel any other type of work that
+	     * started when the Subscription was created.
+	     * @return {void}
+	     */
 	    Subscription.prototype.unsubscribe = function () {
 	        var hasErrors = false;
 	        var errors;
@@ -535,7 +538,7 @@ webpackJsonp([2,0],{
 	                        hasErrors = true;
 	                        errors = errors || [];
 	                        var err = errorObject_1.errorObject.e;
-	                        if (err instanceof UnsubscriptionError) {
+	                        if (err instanceof UnsubscriptionError_1.UnsubscriptionError) {
 	                            errors = errors.concat(err.errors);
 	                        }
 	                        else {
@@ -546,21 +549,35 @@ webpackJsonp([2,0],{
 	            }
 	        }
 	        if (hasErrors) {
-	            throw new UnsubscriptionError(errors);
+	            throw new UnsubscriptionError_1.UnsubscriptionError(errors);
 	        }
 	    };
-	    Subscription.prototype.add = function (subscription) {
-	        // return early if:
-	        //  1. the subscription is null
-	        //  2. we're attempting to add our this
-	        //  3. we're attempting to add the static `empty` Subscription
-	        if (!subscription || (subscription === this) || (subscription === Subscription.EMPTY)) {
+	    /**
+	     * Adds a tear down to be called during the unsubscribe() of this
+	     * Subscription.
+	     *
+	     * If the tear down being added is a subscription that is already
+	     * unsubscribed, is the same reference `add` is being called on, or is
+	     * `Subscription.EMPTY`, it will not be added.
+	     *
+	     * If this subscription is already in an `isUnsubscribed` state, the passed
+	     * tear down logic will be executed immediately.
+	     *
+	     * @param {TeardownLogic} teardown The additional logic to execute on
+	     * teardown.
+	     * @return {Subscription} Returns the Subscription used or created to be
+	     * added to the inner subscriptions list. This Subscription can be used with
+	     * `remove()` to remove the passed teardown logic from the inner subscriptions
+	     * list.
+	     */
+	    Subscription.prototype.add = function (teardown) {
+	        if (!teardown || (teardown === this) || (teardown === Subscription.EMPTY)) {
 	            return;
 	        }
-	        var sub = subscription;
-	        switch (typeof subscription) {
+	        var sub = teardown;
+	        switch (typeof teardown) {
 	            case 'function':
-	                sub = new Subscription(subscription);
+	                sub = new Subscription(teardown);
 	            case 'object':
 	                if (sub.isUnsubscribed || typeof sub.unsubscribe !== 'function') {
 	                    break;
@@ -573,14 +590,18 @@ webpackJsonp([2,0],{
 	                }
 	                break;
 	            default:
-	                throw new Error('Unrecognized subscription ' + subscription + ' added to Subscription.');
+	                throw new Error('Unrecognized teardown ' + teardown + ' added to Subscription.');
 	        }
+	        return sub;
 	    };
+	    /**
+	     * Removes a Subscription from the internal list of subscriptions that will
+	     * unsubscribe during the unsubscribe process of this Subscription.
+	     * @param {Subscription} subscription The subscription to remove.
+	     * @return {void}
+	     */
 	    Subscription.prototype.remove = function (subscription) {
-	        // return early if:
-	        //  1. the subscription is null
-	        //  2. we're attempting to remove ourthis
-	        //  3. we're attempting to remove the static `empty` Subscription
+	        // HACK: This might be redundant because of the logic in `add()`
 	        if (subscription == null || (subscription === this) || (subscription === Subscription.EMPTY)) {
 	            return;
 	        }
@@ -599,21 +620,21 @@ webpackJsonp([2,0],{
 	    return Subscription;
 	}());
 	exports.Subscription = Subscription;
-	var UnsubscriptionError = (function (_super) {
-	    __extends(UnsubscriptionError, _super);
-	    function UnsubscriptionError(errors) {
-	        _super.call(this, 'unsubscriptoin error(s)');
-	        this.errors = errors;
-	        this.name = 'UnsubscriptionError';
-	    }
-	    return UnsubscriptionError;
-	}(Error));
-	exports.UnsubscriptionError = UnsubscriptionError;
 	//# sourceMappingURL=Subscription.js.map
 
 /***/ },
 
-/***/ 49:
+/***/ 50:
+/***/ function(module, exports) {
+
+	"use strict";
+	// typeof any so that it we don't have to cast when comparing a result to the error object
+	exports.errorObject = { e: {} };
+	//# sourceMappingURL=errorObject.js.map
+
+/***/ },
+
+/***/ 51:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -625,11 +646,123 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 50:
+/***/ 77:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var errorObject_1 = __webpack_require__(21);
+	var root_1 = __webpack_require__(17);
+	var Symbol = root_1.root.Symbol;
+	if (typeof Symbol === 'function') {
+	    if (Symbol.observable) {
+	        exports.$$observable = Symbol.observable;
+	    }
+	    else {
+	        if (typeof Symbol.for === 'function') {
+	            exports.$$observable = Symbol.for('observable');
+	        }
+	        else {
+	            exports.$$observable = Symbol('observable');
+	        }
+	        Symbol.observable = exports.$$observable;
+	    }
+	}
+	else {
+	    exports.$$observable = '@@observable';
+	}
+	//# sourceMappingURL=observable.js.map
+
+/***/ },
+
+/***/ 78:
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
+	//# sourceMappingURL=isArray.js.map
+
+/***/ },
+
+/***/ 131:
+/***/ function(module, exports) {
+
+	"use strict";
+	exports.empty = {
+	    isUnsubscribed: true,
+	    next: function (value) { },
+	    error: function (err) { throw err; },
+	    complete: function () { }
+	};
+	//# sourceMappingURL=Observer.js.map
+
+/***/ },
+
+/***/ 132:
+/***/ function(module, exports) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/**
+	 * An error thrown when one or more errors have occurred during the
+	 * `unsubscribe` of a {@link Subscription}.
+	 */
+	var UnsubscriptionError = (function (_super) {
+	    __extends(UnsubscriptionError, _super);
+	    function UnsubscriptionError(errors) {
+	        _super.call(this);
+	        this.errors = errors;
+	        this.name = 'UnsubscriptionError';
+	        this.message = errors ? errors.length + " errors occurred during unsubscription:\n" + errors.map(function (err, i) { return ((i + 1) + ") " + err.toString()); }).join('\n') : '';
+	    }
+	    return UnsubscriptionError;
+	}(Error));
+	exports.UnsubscriptionError = UnsubscriptionError;
+	//# sourceMappingURL=UnsubscriptionError.js.map
+
+/***/ },
+
+/***/ 133:
+/***/ function(module, exports) {
+
+	"use strict";
+	function isObject(x) {
+	    return x != null && typeof x === 'object';
+	}
+	exports.isObject = isObject;
+	//# sourceMappingURL=isObject.js.map
+
+/***/ },
+
+/***/ 134:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Subscriber_1 = __webpack_require__(34);
+	var rxSubscriber_1 = __webpack_require__(43);
+	function toSubscriber(nextOrObserver, error, complete) {
+	    if (nextOrObserver && typeof nextOrObserver === 'object') {
+	        if (nextOrObserver instanceof Subscriber_1.Subscriber) {
+	            return nextOrObserver;
+	        }
+	        else if (typeof nextOrObserver[rxSubscriber_1.$$rxSubscriber] === 'function') {
+	            return nextOrObserver[rxSubscriber_1.$$rxSubscriber]();
+	        }
+	    }
+	    return new Subscriber_1.Subscriber(nextOrObserver, error, complete);
+	}
+	exports.toSubscriber = toSubscriber;
+	//# sourceMappingURL=toSubscriber.js.map
+
+/***/ },
+
+/***/ 135:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var errorObject_1 = __webpack_require__(50);
 	var tryCatchTarget;
 	function tryCatcher() {
 	    try {
@@ -650,64 +783,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 72:
-/***/ function(module, exports) {
-
-	"use strict";
-	exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
-	//# sourceMappingURL=isArray.js.map
-
-/***/ },
-
-/***/ 113:
-/***/ function(module, exports) {
-
-	"use strict";
-	exports.empty = {
-	    isUnsubscribed: true,
-	    next: function (value) { },
-	    error: function (err) { throw err; },
-	    complete: function () { }
-	};
-	//# sourceMappingURL=Observer.js.map
-
-/***/ },
-
-/***/ 114:
-/***/ function(module, exports) {
-
-	"use strict";
-	function isObject(x) {
-	    return x != null && typeof x === 'object';
-	}
-	exports.isObject = isObject;
-	//# sourceMappingURL=isObject.js.map
-
-/***/ },
-
-/***/ 115:
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Subscriber_1 = __webpack_require__(20);
-	var rxSubscriber_1 = __webpack_require__(29);
-	function toSubscriber(nextOrObserver, error, complete) {
-	    if (nextOrObserver && typeof nextOrObserver === 'object') {
-	        if (nextOrObserver instanceof Subscriber_1.Subscriber) {
-	            return nextOrObserver;
-	        }
-	        else if (typeof nextOrObserver[rxSubscriber_1.rxSubscriber] === 'function') {
-	            return nextOrObserver[rxSubscriber_1.rxSubscriber]();
-	        }
-	    }
-	    return new Subscriber_1.Subscriber(nextOrObserver, error, complete);
-	}
-	exports.toSubscriber = toSubscriber;
-	//# sourceMappingURL=toSubscriber.js.map
-
-/***/ },
-
-/***/ 116:
+/***/ 136:
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -724,7 +800,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 256:
+/***/ 308:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, process) { /*!
@@ -4466,11 +4542,11 @@ webpackJsonp([2,0],{
 	  return globals;
 	}));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(267)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(319)))
 
 /***/ },
 
-/***/ 257:
+/***/ 309:
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -5708,7 +5784,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 267:
+/***/ 319:
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -5806,7 +5882,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 279:
+/***/ 331:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5815,7 +5891,12 @@ webpackJsonp([2,0],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(20);
+	var Subscriber_1 = __webpack_require__(34);
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
 	var InnerSubscriber = (function (_super) {
 	    __extends(InnerSubscriber, _super);
 	    function InnerSubscriber(parent, outerValue, outerIndex) {
@@ -5843,7 +5924,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 280:
+/***/ 332:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5852,7 +5933,12 @@ webpackJsonp([2,0],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(20);
+	var Subscriber_1 = __webpack_require__(34);
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
 	var OuterSubscriber = (function (_super) {
 	    __extends(OuterSubscriber, _super);
 	    function OuterSubscriber() {
@@ -5874,30 +5960,30 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 281:
+/***/ 334:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(19);
-	var map_1 = __webpack_require__(284);
+	var map_1 = __webpack_require__(336);
 	Observable_1.Observable.prototype.map = map_1.map;
 	//# sourceMappingURL=map.js.map
 
 /***/ },
 
-/***/ 282:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(19);
-	var mergeMap_1 = __webpack_require__(285);
+	var mergeMap_1 = __webpack_require__(337);
 	Observable_1.Observable.prototype.mergeMap = mergeMap_1.mergeMap;
 	Observable_1.Observable.prototype.flatMap = mergeMap_1.mergeMap;
 	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
 
-/***/ 284:
+/***/ 336:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5906,16 +5992,39 @@ webpackJsonp([2,0],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(20);
+	var Subscriber_1 = __webpack_require__(34);
 	/**
-	 * Similar to the well known `Array.prototype.map` function, this operator
-	 * applies a projection to each value and emits that projection in the returned observable
+	 * Applies a given `project` function to each value emitted by the source
+	 * Observable, and emits the resulting values as an Observable.
+	 *
+	 * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
+	 * it passes each source value through a transformation function to get
+	 * corresponding output values.</span>
 	 *
 	 * <img src="./img/map.png" width="100%">
 	 *
-	 * @param {Function} project the function to create projection
-	 * @param {any} [thisArg] an optional argument to define what `this` is in the project function
-	 * @returns {Observable} a observable of projected values
+	 * Similar to the well known `Array.prototype.map` function, this operator
+	 * applies a projection to each value and emits that projection in the output
+	 * Observable.
+	 *
+	 * @example <caption>Map every every click to the clientX position of that click</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var positions = clicks.map(ev => ev.clientX);
+	 * positions.subscribe(x => console.log(x));
+	 *
+	 * @see {@link mapTo}
+	 * @see {@link pluck}
+	 *
+	 * @param {function(value: T, index: number): R} project The function to apply
+	 * to each `value` emitted by the source Observable. The `index` parameter is
+	 * the number `i` for the i-th emission that has happened since the
+	 * subscription, starting from the number `0`.
+	 * @param {any} [thisArg] An optional argument to define what `this` is in the
+	 * `project` function.
+	 * @return {Observable<R>} An Observable that emits the values from the source
+	 * Observable transformed by the given `project` function.
+	 * @method map
+	 * @owner Observable
 	 */
 	function map(project, thisArg) {
 	    if (typeof project !== 'function') {
@@ -5929,11 +6038,16 @@ webpackJsonp([2,0],{
 	        this.project = project;
 	        this.thisArg = thisArg;
 	    }
-	    MapOperator.prototype.call = function (subscriber) {
-	        return new MapSubscriber(subscriber, this.project, this.thisArg);
+	    MapOperator.prototype.call = function (subscriber, source) {
+	        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
 	    };
 	    return MapOperator;
 	}());
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
 	var MapSubscriber = (function (_super) {
 	    __extends(MapSubscriber, _super);
 	    function MapSubscriber(destination, project, thisArg) {
@@ -5961,7 +6075,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 285:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5970,21 +6084,63 @@ webpackJsonp([2,0],{
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var subscribeToResult_1 = __webpack_require__(290);
-	var OuterSubscriber_1 = __webpack_require__(280);
+	var subscribeToResult_1 = __webpack_require__(341);
+	var OuterSubscriber_1 = __webpack_require__(332);
 	/**
-	 * Returns an Observable that emits items based on applying a function that you supply to each item emitted by the
-	 * source Observable, where that function returns an Observable, and then merging those resulting Observables and
-	 * emitting the results of this merger.
+	 * Projects each source value to an Observable which is merged in the output
+	 * Observable.
+	 *
+	 * <span class="informal">Maps each value to an Observable, then flattens all of
+	 * these inner Observables using {@link mergeAll}.</span>
 	 *
 	 * <img src="./img/mergeMap.png" width="100%">
 	 *
-	 * @param {Function} a function that, when applied to an item emitted by the source Observable, returns an Observable.
-	 * @returns {Observable} an Observable that emits the result of applying the transformation function to each item
-	 * emitted by the source Observable and merging the results of the Observables obtained from this transformation
+	 * Returns an Observable that emits items based on applying a function that you
+	 * supply to each item emitted by the source Observable, where that function
+	 * returns an Observable, and then merging those resulting Observables and
+	 * emitting the results of this merger.
+	 *
+	 * @example <caption>Map and flatten each letter to an Observable ticking every 1 second</caption>
+	 * var letters = Rx.Observable.of('a', 'b', 'c');
+	 * var result = letters.mergeMap(x =>
+	 *   Rx.Observable.interval(1000).map(i => x+i)
+	 * );
+	 * result.subscribe(x => console.log(x));
+	 *
+	 * @see {@link concatMap}
+	 * @see {@link exhaustMap}
+	 * @see {@link merge}
+	 * @see {@link mergeAll}
+	 * @see {@link mergeMapTo}
+	 * @see {@link mergeScan}
+	 * @see {@link switchMap}
+	 *
+	 * @param {function(value: T, ?index: number): Observable} project A function
+	 * that, when applied to an item emitted by the source Observable, returns an
+	 * Observable.
+	 * @param {function(outerValue: T, innerValue: I, outerIndex: number, innerIndex: number): any} [resultSelector]
+	 * A function to produce the value on the output Observable based on the values
+	 * and the indices of the source (outer) emission and the inner Observable
+	 * emission. The arguments passed to this function are:
+	 * - `outerValue`: the value that came from the source
+	 * - `innerValue`: the value that came from the projected Observable
+	 * - `outerIndex`: the "index" of the value that came from the source
+	 * - `innerIndex`: the "index" of the value from the projected Observable
+	 * @param {number} [concurrent=Number.POSITIVE_INFINITY] Maximum number of input
+	 * Observables being subscribed to concurrently.
+	 * @return {Observable} An Observable that emits the result of applying the
+	 * projection function (and the optional `resultSelector`) to each item emitted
+	 * by the source Observable and merging the results of the Observables obtained
+	 * from this transformation.
+	 * @method mergeMap
+	 * @owner Observable
 	 */
 	function mergeMap(project, resultSelector, concurrent) {
 	    if (concurrent === void 0) { concurrent = Number.POSITIVE_INFINITY; }
+	    if (typeof resultSelector === 'number') {
+	        concurrent = resultSelector;
+	        resultSelector = null;
+	    }
 	    return this.lift(new MergeMapOperator(project, resultSelector, concurrent));
 	}
 	exports.mergeMap = mergeMap;
@@ -5995,12 +6151,17 @@ webpackJsonp([2,0],{
 	        this.resultSelector = resultSelector;
 	        this.concurrent = concurrent;
 	    }
-	    MergeMapOperator.prototype.call = function (observer) {
-	        return new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent);
+	    MergeMapOperator.prototype.call = function (observer, source) {
+	        return source._subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
 	    };
 	    return MergeMapOperator;
 	}());
 	exports.MergeMapOperator = MergeMapOperator;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
 	var MergeMapSubscriber = (function (_super) {
 	    __extends(MergeMapSubscriber, _super);
 	    function MergeMapSubscriber(destination, project, resultSelector, concurrent) {
@@ -6081,7 +6242,45 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 289:
+/***/ 338:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var root_1 = __webpack_require__(17);
+	var Symbol = root_1.root.Symbol;
+	if (typeof Symbol === 'function') {
+	    if (Symbol.iterator) {
+	        exports.$$iterator = Symbol.iterator;
+	    }
+	    else if (typeof Symbol.for === 'function') {
+	        exports.$$iterator = Symbol.for('iterator');
+	    }
+	}
+	else {
+	    if (root_1.root.Set && typeof new root_1.root.Set()['@@iterator'] === 'function') {
+	        // Bug for mozilla version
+	        exports.$$iterator = '@@iterator';
+	    }
+	    else if (root_1.root.Map) {
+	        // es6-shim specific logic
+	        var keys = Object.getOwnPropertyNames(root_1.root.Map.prototype);
+	        for (var i = 0; i < keys.length; ++i) {
+	            var key = keys[i];
+	            if (key !== 'entries' && key !== 'size' && root_1.root.Map.prototype[key] === root_1.root.Map.prototype['entries']) {
+	                exports.$$iterator = key;
+	                break;
+	            }
+	        }
+	    }
+	    else {
+	        exports.$$iterator = '@@iterator';
+	    }
+	}
+	//# sourceMappingURL=iterator.js.map
+
+/***/ },
+
+/***/ 340:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6093,16 +6292,17 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 290:
+/***/ 341:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(15);
-	var isArray_1 = __webpack_require__(72);
-	var isPromise_1 = __webpack_require__(289);
+	var root_1 = __webpack_require__(17);
+	var isArray_1 = __webpack_require__(78);
+	var isPromise_1 = __webpack_require__(340);
 	var Observable_1 = __webpack_require__(19);
-	var SymbolShim_1 = __webpack_require__(30);
-	var InnerSubscriber_1 = __webpack_require__(279);
+	var iterator_1 = __webpack_require__(338);
+	var observable_1 = __webpack_require__(77);
+	var InnerSubscriber_1 = __webpack_require__(331);
 	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
 	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
 	    if (destination.isUnsubscribed) {
@@ -6139,9 +6339,9 @@ webpackJsonp([2,0],{
 	        });
 	        return destination;
 	    }
-	    else if (typeof result[SymbolShim_1.SymbolShim.iterator] === 'function') {
-	        for (var _i = 0, result_1 = result; _i < result_1.length; _i++) {
-	            var item = result_1[_i];
+	    else if (typeof result[iterator_1.$$iterator] === 'function') {
+	        for (var _i = 0, _a = result; _i < _a.length; _i++) {
+	            var item = _a[_i];
 	            destination.next(item);
 	            if (destination.isUnsubscribed) {
 	                break;
@@ -6151,8 +6351,8 @@ webpackJsonp([2,0],{
 	            destination.complete();
 	        }
 	    }
-	    else if (typeof result[SymbolShim_1.SymbolShim.observable] === 'function') {
-	        var obs = result[SymbolShim_1.SymbolShim.observable]();
+	    else if (typeof result[observable_1.$$observable] === 'function') {
+	        var obs = result[observable_1.$$observable]();
 	        if (typeof obs.subscribe !== 'function') {
 	            destination.error('invalid observable');
 	        }
@@ -6169,7 +6369,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 301:
+/***/ 352:
 /***/ function(module, exports) {
 
 	/******/ (function(modules) { // webpackBootstrap
@@ -6343,7 +6543,7 @@ webpackJsonp([2,0],{
 
 /***/ },
 
-/***/ 302:
+/***/ 353:
 /***/ function(module, exports) {
 
 	/******/ (function(modules) { // webpackBootstrap
