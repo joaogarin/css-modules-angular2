@@ -1,27 +1,21 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from '@angular/core';
-
-/**
- * Import the snippet component
- */
-import {Snippet} from '../shared/Snippet/Snippet';
+import {Component, OnInit} from '@angular/core';
 
 /**
  * Include all necessary CSS and ts
  */
 var styles = require('./CompositionOverrides.css');
-var js = require('!!raw!./CompositionOverrides.ts');
-var css = require('!!raw!./CompositionOverrides.css');
-var layout = require('!!raw!./../shared/styles/layout.css');
-var heading = require('!!raw!./../shared/styles/typography.css');
+var js = require('raw-loader!./CompositionOverrides.ts');
+var css = require('raw-loader!./CompositionOverrides.css');
+var layout = require('raw-loader!./../shared/styles/layout.css');
+var heading = require('raw-loader!./../shared/styles/typography.css');
 
 /**
  * Wraps the component in a snippet component
  */
 @Component({
-    directives: [Snippet],
     'selector': 'composition-overrides-demo',
     'template': `<snippet [files]="files">
         <div class="${styles.root}">
@@ -29,7 +23,7 @@ var heading = require('!!raw!./../shared/styles/typography.css');
         </div>
     </snippet>`
 })
-export class CompositionOverridesDemo {
+export class CompositionOverridesDemo implements OnInit {
     files:any;
 
     ngOnInit() {

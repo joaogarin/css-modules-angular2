@@ -1,32 +1,20 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from '@angular/core';
-
-/**
- * Import the snippet component
- */
-import {Snippet} from '../shared/Snippet/Snippet';
-
-/**
- * Import the variants components
- */
-import {StyleVariantA} from './StyleVariantA/StyleVariantA';
-import {StyleVariantB} from './StyleVariantB/StyleVariantB';
+import {Component, OnInit} from '@angular/core';
 
 /**
  * Include all necessary CSS
  */
-var js = require('!!raw!./StyleVariantA/StyleVariantA.ts');
-var css = require('!!raw!./StyleVariantA/StyleVariantA.css');
-var layout = require('!!raw!./../shared/styles/layout.css');
-var heading = require('!!raw!./../shared/styles/typography.css');
+var js = require('raw-loader!./StyleVariantA/StyleVariantA.ts');
+var css = require('raw-loader!./StyleVariantA/StyleVariantA.css');
+var layout = require('raw-loader!./../shared/styles/layout.css');
+var heading = require('raw-loader!./../shared/styles/typography.css');
 
 /**
  * Wraps the two components in a snippet component
  */
 @Component({
-    directives: [Snippet, StyleVariantA, StyleVariantB],
     'selector': 'class-composition-demo',
     'template': `<snippet [files]="files">
         <div>
@@ -36,7 +24,7 @@ var heading = require('!!raw!./../shared/styles/typography.css');
       </div>
     </snippet>`
 })
-export class ClassCompositionDemo {
+export class ClassCompositionDemo implements OnInit {
     files:any;
 
     ngOnInit() {

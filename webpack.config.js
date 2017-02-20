@@ -1,140 +1,186 @@
 // @joaogarin
 
 /*
- * Helper
- * env(), getBanner(), root(), and rootDir()
- * are defined at the bottom
+ * Helper: root(), and rootDir() are defined at the bottom
  */
-
-var path = require('path');
 var webpack = require('webpack');
-var CopyWebpackPlugin  = require('copy-webpack-plugin');
-var HtmlWebpackPlugin  = require('html-webpack-plugin');
-var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
+var helpers = require('./helpers');
+
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+
+const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 // Webpack Plugins
-var CommonsChunkPlugin   = webpack.optimize.CommonsChunkPlugin;
+var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var metadata = {
-  title: 'Css Modules with angular2',
+const METADATA = {
+  title: 'CSS modules Angular2',
   baseUrl: '/',
   host: 'localhost',
   port: 3000,
-  ENV: ENV
+  ENV: ENV,
 };
 
-/*
- * Config
- */
-module.exports = {
-  // static data for index.html
-  metadata: metadata,
-  // for faster builds use 'eval'
-  devtool: 'source-map',
-  debug: true,
-  // cache: false,
+module.exports = function (options) {
+  return {
+    // for faster builds use 'eval'
+    devtool: 'source-map',
+    // cache: false,
 
-  // our angular app
-  entry: { 'pollyfills': './src/pollyfills.ts', 'bootstrap': './src/bootstrap.ts' },
+    // our angular app
+    // our angular app
+    entry: {
+      'polyfills': './src/polyfills.ts',
+      'vendor': './src/vendor.ts',
+      'main': './src/main.ts',
+    },
 
-  // Config for our build files
-  output: {
-    path: root('dist'),
-    filename: '[name].bundle.js',
-    sourceMapFilename: '[name].map',
-    chunkFilename: '[id].chunk.js'
-  },
+    // Config for our build files
+    output: {
+      path: helpers.root('dist'),
+      filename: '[name].bundle.js',
+      sourceMapFilename: '[name].map',
+      chunkFilename: '[id].chunk.js'
+    },
 
-  resolve: {
-    root: __dirname,
-    modulesDirectories: ['node_modules', 'components'],
-    // ensure loader extensions match
-    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') // ensure .async.ts etc also works
-  },
+    /*
+    * Options affecting the resolving of modules.
+    *
+    * See: http://webpack.github.io/docs/configuration.html#resolve
+    */
+    resolve: {
 
-  module: {
-    preLoaders: [ { test: /\.ts$/, loader: 'tslint-loader' } ],
-    loaders: [
-      //{ test: /\.css$/,   loader: 'raw' },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&sourceMap&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader?sourceMap') },
+      /*
+       * An array of extensions that should be used to resolve modules.
+       *
+       * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
+       */
+      extensions: ['.ts', '.js', '.json'],
 
-      // Support for .ts files.
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        query: {
-          'ignoreDiagnostics': [
-            2403, // 2403 -> Subsequent variable declarations
-            2300, // 2300 Duplicate identifier
-            2374, // 2374 -> Duplicate number index signature
-            2375  // 2375 -> Duplicate string index signature
-          ]
+      // An array of directory names to be resolved to the current directory
+      modules: [helpers.root('src'), 'node_modules'],
+
+    },
+    module: {
+      rules: [
+        // Support for .ts files.
+        {
+          test: /\.ts$/,
+          use: 'awesome-typescript-loader',
+          exclude: [/\.(spec|e2e)\.ts$/]
+        },
+        {
+          test: /\.css$/, loader: ExtractTextPlugin.extract(
+            {
+              fallback: 'style-loader',
+              use: [
+                {
+                  loader: 'css-loader',
+                  query: {
+                    modules: true,
+                    importLoaders: 1,
+                    localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
+                  }
+                },
+                'postcss-loader']
+            })
+        },
+        {
+          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+          use: "url-loader",
+          query: { limite: "10000", mimetype: "image/svg+xml" },
         }
-        //,exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/ ] temporarily due to zone js problem
-      },
+      ]
+    },
 
-      { test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
+    plugins: [
+      /*
+      * Plugin: CommonsChunkPlugin
+      * Description: Shares common code between the pages.
+      * It identifies common modules and put them into a commons chunk.
+      *
+      * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
+      * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
+      */
+      new webpack.optimize.CommonsChunkPlugin({
+        name: ['polyfills', 'vendor'].reverse()
+      }),
+
+      // Plugin : ExtractTextPlugin
+      // Description: Extact sass into its own css file
+      //
+      // See: https://github.com/webpack/extract-text-webpack-plugin
+      new ExtractTextPlugin("style.css"),
+
+      // Plugin: HtmlWebpackPlugin
+      // Description: Simplifies creation of HTML files to serve your webpack bundles.
+      // This is especially useful for webpack bundles that include a hash in the filename
+      // which changes every compilation.
+      //
+      // See: https://github.com/ampedandwired/html-webpack-plugin
+      new HtmlWebpackPlugin(
+        {
+          template: 'src/index.html',
+          title: METADATA.title,
+          chunksSortMode: 'dependency',
+          metadata: METADATA,
+        }
+      ),
+
+      // Plugin: DefinePlugin
+      // Description: Define free variables.
+      // Useful for having development builds with debug logging or adding global constants.
+      //
+      // Environment helpers
+      //
+      // See: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+      // NOTE: when adding more properties make sure you include them in custom-typings.d.ts
+      new webpack.DefinePlugin({ 'ENV': JSON.stringify(METADATA.ENV) }),
+
+      /**
+       * Plugin LoaderOptionsPlugin (experimental)
+       *
+       * See: https://gist.github.com/sokra/27b24881210b56bbaff7
+       */
+      new LoaderOptionsPlugin({
+        debug: true,
+        options: {
+          /**
+           * Static analysis linter for TypeScript advanced options configuration
+           * Description: An extensible linter for the TypeScript language.
+           *
+           * See: https://github.com/wbuchwalter/tslint-loader
+           */
+          tslint: {
+            emitErrors: true,
+            failOnHint: false,
+            resourcePath: 'src'
+          },
+        }
+      }),
     ],
-    noParse: [ /zone\.js\/dist\/.+/, /angular2\/bundles\/.+/ ],
-  },
-
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
-    // generating html
-    new HtmlWebpackPlugin({ template: 'src/index.html' }),
-    // replace
-    new webpack.DefinePlugin({
-      'process.env': {
-        'ENV': JSON.stringify(metadata.ENV),
-        'NODE_ENV': JSON.stringify(metadata.ENV)
-      }
-    }),
-    new ExtractTextPlugin('style.css', { allChunks: true })
-  ],
-
-  // Other module loader config
-  tslint: {
-    emitErrors: false,
-    failOnHint: false,
-    resourcePath: 'src'
-  },
-  // our Webpack Development Server config
-  devServer: {
-    port: metadata.port,
-    host: metadata.host,
-    contentBase: 'src/',
-    historyApiFallback: true,
-    watchOptions: { aggregateTimeout: 300, poll: 1000 }
-  },
-  // we need this due to problems with es6-shim
-  node: {global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false},
-
-  postcss: [
-    require('autoprefixer-core'),
-    require('postcss-color-rebeccapurple')
-  ],
+    // our Webpack Development Server config
+    devServer: {
+      port: METADATA.port,
+      host: METADATA.host,
+      // contentBase: 'src/',
+      historyApiFallback: true,
+      watchOptions: { aggregateTimeout: 300, poll: 1000 }
+    },
+    // we need this due to problems with es6-shim
+    node: {
+      global: true,
+      crypto: 'empty',
+      process: true,
+      module: false,
+      clearImmediate: false,
+      setImmediate: false
+    }
+  }
 };
-
-
-// Helper functions
-
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return path.join.apply(path, [__dirname].concat(args));
-}
-
-function prepend(extensions, args) {
-  args = args || [];
-  if (!Array.isArray(args)) { args = [args] }
-  return extensions.reduce(function(memo, val) {
-    return memo.concat(val, args.map(function(prefix) {
-      return prefix + val
-    }));
-  }, ['']);
-}
-function rootNode(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return root.apply(path, ['node_modules'].concat(args));
-}

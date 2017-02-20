@@ -1,5 +1,27 @@
 {
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
   "rules": {
+    "directive-selector-name": [true, "camelCase"],
+    "component-selector-name": [true, "kebab-case"],
+    "directive-selector-type": [true, "attribute"],
+    "component-selector-type": [true, "element"],
+    "directive-selector-prefix": [true, "ca"],
+    "component-selector-prefix": [true, "ca"],
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": true,
+    "no-output-rename": true,
+    "no-forward-ref" :true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "pipe-naming": [true, "camelCase", "ca"],
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "import-destructuring-spacing": true,
     "class-name": true,
     "curly": false,
     "eofline": true,
@@ -9,7 +31,7 @@
     ],
     "max-line-length": [
       true,
-      100
+      400
     ],
     "member-ordering": [
       true,
@@ -24,7 +46,7 @@
     "no-empty": false,
     "no-eval": true,
     "trailing-comma": true,
-    "no-trailing-whitespace": true,
+    "no-trailing-whitespace": false,
     "no-unused-expression": true,
     "no-unused-variable": false,
     "no-unreachable": true,
@@ -42,7 +64,7 @@
     ],
     "semicolon": true,
     "triple-equals": [
-      true,
+      false,
       "allow-null-check"
     ],
     "variable-name": false,

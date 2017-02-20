@@ -1,16 +1,14 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from '@angular/core';
-import {NgFor} from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 var styles = require('./snippet.css');
 
 @Component({
-    'inputs': ['files'],
-    'selector': 'snippet',
-    'directives': [NgFor],
-    'template': `<div class=${styles.output}>
+  'inputs': ['files'],
+  'selector': 'snippet',
+  'template': `<div class=${styles.output}>
                   <div class=${styles.fileName}>Output</div>
                   <div class=${styles.outputContent}>
                     <ng-content></ng-content>
@@ -22,5 +20,5 @@ var styles = require('./snippet.css');
                 </div>`
 })
 export class Snippet {
-    files: any;
+  @Input() files: any;
 }

@@ -1,12 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from '@angular/core';
-
-/**
- * Import the snippet component
- */
-import {Snippet} from '../shared/Snippet/Snippet';
+import {Component, OnInit} from '@angular/core';
 
 /**
  * Include GlobalSelectors css to be injected in the template
@@ -14,28 +9,27 @@ import {Snippet} from '../shared/Snippet/Snippet';
  * See the webpack.config.js in the root folder
  */
 var styles = require('./GlobalSelectors.css');
-var js = require('!!raw!./GlobalSelectors.ts');
-var css = require('!!raw!./GlobalSelectors.css');
+var js = require('raw-loader!./GlobalSelectors.ts');
+var css = require('raw-loader!./GlobalSelectors.css');
 
 /**
  * Wraps the main component in a snippet component
  */
 @Component({
-    directives: [Snippet],
     'selector': 'global-selectors-demo',
     'template': `<snippet [files]="files">
-        <div class="${ styles.root }">
+        <div class="${ styles.root}">
         <p class="text">Global Selectors</p>
       </div>
     </snippet>`
 })
-export class GlobalSelectorsDemo {
-    files:any;
+export class GlobalSelectorsDemo implements OnInit {
+    files: any;
 
     ngOnInit() {
         this.files = [
-            {name: 'GlobalSelectors.ts', source: js},
-            {name: 'GlobalSelectors.css', source: css}
+            { name: 'GlobalSelectors.ts', source: js },
+            { name: 'GlobalSelectors.css', source: css }
         ];
     }
 }

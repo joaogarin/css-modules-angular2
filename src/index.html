@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="">
+
 <head>
-  <title>CSS Modules with Angular2 and webpack</title>
+  <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Angular2 Webpack Starter by @gdi2990 from @AngularClass">
+  <meta name="description" content="Angular2 CSS Modules">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  
   <!-- base url -->
-  <base href="<%= webpackConfig.metadata.baseUrl %>">
+  <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
 
   <!-- use http://www.favicon-generator.org/ to replace files in public/icon-->
   <link rel="icon" type="image/png" href="angular-shield.png">
@@ -18,16 +22,18 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
+
 <body>
 
-<app>
-  Loading...
-</app>
+  <ca-app>
+    Loading...
+  </ca-app>
 
-<% if (webpackConfig.metadata.ENV === 'development') { %>
-<!-- Webpack Dev Server reload -->
-<script src="http://<%= webpackConfig.metadata.host %>:<%= webpackConfig.metadata.port %>/webpack-dev-server.js"></script>
-<% } %>
+    <% if (htmlWebpackPlugin.options.metadata.isDevServer && htmlWebpackPlugin.options.metadata.HMR !== true) { %>
+    <!-- Webpack Dev Server reload -->
+    <script src="/webpack-dev-server.js"></script>
+    <% } %>
 
 </body>
+
 </html>

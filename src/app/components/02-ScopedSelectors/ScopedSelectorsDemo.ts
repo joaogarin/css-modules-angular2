@@ -1,7 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 /**
  * Import the snippet component
@@ -14,14 +14,13 @@ import {Snippet} from '../shared/Snippet/Snippet';
  * See the webpack.config.js in the root folder
  */
 var styles = require('./ScopedSelectors.css');
-var js = require('!!raw!./ScopedSelectors.ts');
-var css = require('!!raw!./ScopedSelectors.css');
+var js = require('raw-loader!./ScopedSelectors.ts');
+var css = require('raw-loader!./ScopedSelectors.css');
 
 /**
  * Wraps the main component in a snippet component
  */
 @Component({
-    directives: [Snippet],
     'selector': 'scoped-selectors-demo',
     'template': `<snippet [files]="files">
         <div class="${styles.root}">
@@ -29,7 +28,7 @@ var css = require('!!raw!./ScopedSelectors.css');
           </div>
     </snippet>`
 })
-export class ScopedSelectorsDemo {
+export class ScopedSelectorsDemo implements OnInit {
     files:any;
 
     ngOnInit() {
