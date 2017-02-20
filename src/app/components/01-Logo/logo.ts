@@ -6,7 +6,7 @@ import {Component} from '@angular/core';
 /**
  * Include the logo css
  */
-var styles = require('./logo.css');
+import styles from "./logo.css";
 
 /*
  * Logo Component

@@ -4,16 +4,12 @@
 import {Component, OnInit} from '@angular/core';
 
 /**
- * Import the snippet component
- */
-import {Snippet} from '../shared/Snippet/Snippet';
-
-/**
  * Include ScopedSelectors css to be injected in the template
  * Webpack will process this CSS in module mode
  * See the webpack.config.js in the root folder
  */
-var styles = require('./ScopedSelectors.css');
+import styles from "./ScopedSelectors.css";
+
 var js = require('raw-loader!./ScopedSelectors.ts');
 var css = require('raw-loader!./ScopedSelectors.css');
 

@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
  * Webpack will process this CSS in module mode
  * See the webpack.config.js in the root folder
  */
-var styles = require('./StyleVariantA.css');
+import styles from './StyleVariantA.css';
 
 @Component({
     'selector': 'style-variant-a',

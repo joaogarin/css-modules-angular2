@@ -3,7 +3,7 @@
  */
 import { Component, Input } from '@angular/core';
 
-var styles = require('./snippet.css');
+import styles from './snippet.css';
 
 @Component({
   'inputs': ['files'],

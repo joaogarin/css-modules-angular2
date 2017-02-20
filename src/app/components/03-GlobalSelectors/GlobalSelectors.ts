@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
  * Webpack will process this CSS in module mode
  * See the webpack.config.js in the root folder
  */
-var styles = require('./GlobalSelectors.css');
+import styles from './GlobalSelectors.css';
 
 @Component({
     'selector': 'global-selectors',

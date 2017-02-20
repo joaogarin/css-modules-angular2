@@ -6,7 +6,8 @@ import {Component, OnInit} from '@angular/core';
 /**
  * Include all necessary CSS and ts
  */
-var styles = require('./CompositionOverrides.css');
+import styles from './CompositionOverrides.css';
+
 var js = require('raw-loader!./CompositionOverrides.ts');
 var css = require('raw-loader!./CompositionOverrides.css');
 var layout = require('raw-loader!./../shared/styles/layout.css');

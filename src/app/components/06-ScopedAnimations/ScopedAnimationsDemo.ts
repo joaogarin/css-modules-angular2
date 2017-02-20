@@ -6,7 +6,7 @@ import {Component, OnInit} from '@angular/core';
 /**
  * Include all necessary CSS and ts
  */
-var styles = require('./ScopedAnimations.css');
+import styles from './ScopedAnimations.css';
 var js = require('raw-loader!./ScopedAnimations.ts');
 var css = require('raw-loader!./ScopedAnimations.css');
 var animations = require('raw-loader!./../shared/styles/animations.css');
